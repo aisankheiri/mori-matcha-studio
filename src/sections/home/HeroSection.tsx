@@ -29,7 +29,7 @@ export default function HeroSection() {
   const whiskY = useTransform(
     scrollYProgress,
     [0, 0.45, 0.75, 1],
-    [0, 260, 820, 1100]
+    [0, 260, 820, 1000]
   );
   const whiskRotate = useTransform(scrollYProgress, [0, 0.6, 1], [-10, -4, 10]);
   const whiskScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
@@ -45,10 +45,10 @@ export default function HeroSection() {
   const bowlScale = useTransform(scrollYProgress, [0, 1], [1, 1.015]);
 
   return (
-   <section
-  ref={sectionRef}
-  className="relative -mt-20 min-h-[160vh] overflow-hidden bg-[var(--color-bg)] md:-mt-24 md:min-h-[185vh]"
->
+    <section
+      ref={sectionRef}
+      className="relative -mt-1 min-h-[170vh] overflow-hidden bg-[var(--color-bg)] md:-mt-14 md:min-h-[185vh]"
+    >
       <motion.div
         style={{ opacity: bgOpacityA }}
         className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_18%_16%,rgba(107,143,113,0.20),transparent_22%),radial-gradient(circle_at_82%_14%,rgba(231,225,216,0.98),transparent_26%),linear-gradient(180deg,#f7f6f2_0%,#f2efe9_100%)]"
@@ -124,8 +124,16 @@ export default function HeroSection() {
           {/* Mobilde görselden sonra metin, desktopta solda */}
           <motion.div
             style={{ y: textY }}
-           className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24"
+            className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24"
           >
+              <motion.span
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+              className="inline-flex rounded-full border border-[#6B8F71]/15 bg-white/75 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--color-primary-dark)] shadow-[var(--shadow-soft)] backdrop-blur-md md:text-[11px]"
+            >
+              Seremonik Matcha Koleksiyonu
+            </motion.span>
 
             <motion.h1
               initial={{ opacity: 0, y: 22 }}
