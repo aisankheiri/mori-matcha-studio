@@ -1,5 +1,6 @@
 import Navbar from "@/components/layout/Navbar";
 import HeroSection from "@/sections/home/HeroSection";
+import MatchaShowcase from "@/sections/home/MatchaShowcase";
 
 export default function HomePage() {
   return (
@@ -7,6 +8,7 @@ export default function HomePage() {
       <Navbar />
       <main>
         <HeroSection />
+        <MatchaShowcase />
       </main>
     </>
   );
