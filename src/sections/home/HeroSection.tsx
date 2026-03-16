@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import MatchaShowcase from "./MatchaShowcase";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -21,17 +22,23 @@ export default function HeroSection() {
 
   const sceneY = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
-  const whiskX = useTransform(
-    scrollYProgress,
-    [0, 0.45, 0.75, 1],
-    [-90, -320, -800, -730]
-  );
+const whiskX = useTransform(
+  scrollYProgress,
+  [0, 0.45, 0.75, 0.9, 1],
+  [-190, -120, -800, -790, -580]
+);
+
   const whiskY = useTransform(
     scrollYProgress,
-    [0, 0.45, 0.75, 1],
-    [0, 260, 820, 1000]
+    [0, 0.45, 0.75, 0.9, 1],
+    [0, 560, 840, 1100, 1570]
   );
-  const whiskRotate = useTransform(scrollYProgress, [0, 0.6, 1], [-10, -4, 10]);
+
+const whiskRotate = useTransform(
+  scrollYProgress,
+  [0, 0.4, 0.55, 0.75, 1],
+  [-8, -3, 180, 10, 6]
+);
   const whiskScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
 
   const powderY = useTransform(scrollYProgress, [0, 1], [70, 80]);
@@ -126,7 +133,7 @@ export default function HeroSection() {
             style={{ y: textY }}
             className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24"
           >
-              <motion.span
+            <motion.span
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
@@ -249,9 +256,29 @@ export default function HeroSection() {
                 sunum için tasarlanan bu özel araç, ritüelinizi tamamlar.
               </p>
             </div>
+
           </div>
         </Container>
+        <div className="relative z-20 mt-[160px] md:mt-[260px]">
+          <div className="relative z-20 mt-[120px] md:mt-[200px]">
+            <Container>
+              <div className="relative flex justify-center">
+                <div className="absolute inset-x-1/2 top-[58%] -z-10 h-[180px] w-[280px] -translate-x-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl md:h-[240px] md:w-[420px]" />
+
+                <Image
+                  src="/images/hero/matcha-collection.png"
+                  alt="Matcha, bowl ve bambu whisk koleksiyonu"
+                  width={1600}
+                  height={900}
+                  priority
+                  className="h-auto w-[420px] max-w-full object-contain sm:w-[520px] md:w-[700px]"
+                />
+              </div>
+            </Container>
+          </div>
+        </div>
       </div>
+
     </section>
   );
 }
