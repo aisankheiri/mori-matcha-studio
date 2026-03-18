@@ -5,7 +5,6 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
-import MatchaShowcase from "./MatchaShowcase";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -22,24 +21,27 @@ export default function HeroSection() {
 
   const sceneY = useTransform(scrollYProgress, [0, 1], [0, 90]);
 
-const whiskX = useTransform(
-  scrollYProgress,
-  [0, 0.45, 0.75, 0.9, 1],
-  [-190, -120, -800, -790, -580]
-);
+  // Whisk: önce hero sahnesinde kalır, sonra aşağı iner,
+
+  const whiskX = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.4, 0.6, 0.7, 0.92, 1],
+    [-160, -150, -700, -790, -560, -580, -450]
+  );
 
   const whiskY = useTransform(
     scrollYProgress,
-    [0, 0.45, 0.75, 0.9, 1],
-    [0, 560, 840, 1100, 1570]
+    [0, 0.25, 0.4, 0.6, 0.7, 0.92, 1],
+    [-100, 390, 900, 1100, 1600, 1570, 2100]
   );
 
-const whiskRotate = useTransform(
-  scrollYProgress,
-  [0, 0.4, 0.55, 0.75, 1],
-  [-8, -3, 180, 10, 6]
-);
-  const whiskScale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
+  const whiskRotate = useTransform(
+    scrollYProgress,
+    [0, 0.4, 0.55, 0.75, 1],
+    [-8, 100, 360, 0, 210]
+  );
+  const whiskScale = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.96, 0.52]);
+
 
   const powderY = useTransform(scrollYProgress, [0, 1], [70, 80]);
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
@@ -54,7 +56,7 @@ const whiskRotate = useTransform(
   return (
     <section
       ref={sectionRef}
-      className="relative -mt-1 min-h-[170vh] overflow-hidden bg-[var(--color-bg)] md:-mt-14 md:min-h-[185vh]"
+      className="relative -mt-1 min-h-[250vh] overflow-hidden bg-[var(--color-bg)] md:-mt-14 md:min-h-[330vh]"
     >
       <motion.div
         style={{ opacity: bgOpacityA }}
@@ -68,7 +70,6 @@ const whiskRotate = useTransform(
 
       <Container>
         <div className="grid min-h-[calc(100vh-72px)] items-start gap-10 pb-12 pt-0 md:grid-cols-[0.95fr_1.05fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
-          {/* Mobilde önce görsel, desktopta sağda */}
           <div className="order-1 relative flex min-h-[360px] items-center justify-center sm:min-h-[460px] md:order-2 md:min-h-[860px]">
             <motion.div
               animate={{ scale: [1, 1.04, 1] }}
@@ -80,7 +81,6 @@ const whiskRotate = useTransform(
               style={{ y: sceneY }}
               className="relative h-[330px] w-full max-w-[300px] sm:h-[450px] sm:max-w-[390px] md:h-[760px] md:max-w-[640px]"
             >
-              {/* Powder */}
               <motion.div
                 style={{ y: powderY, rotate: powderRotate }}
                 className="absolute left-[32%] top-[26%] z-10 w-[54%] sm:left-[32%] sm:top-[25%] sm:w-[54%] md:left-[30%] md:top-[22%] md:w-[50%]"
@@ -95,7 +95,6 @@ const whiskRotate = useTransform(
                 />
               </motion.div>
 
-              {/* Leaves */}
               <motion.div
                 style={{ x: leavesX, y: leavesY, rotate: leavesRotate }}
                 className="absolute left-[4%] bottom-[12%] z-30 w-[18%] sm:left-[4%] sm:bottom-[12%] sm:w-[18%] md:left-[6%] md:bottom-[10%] md:w-[18%]"
@@ -109,7 +108,6 @@ const whiskRotate = useTransform(
                 />
               </motion.div>
 
-              {/* Bowl */}
               <motion.div
                 style={{ y: bowlY, scale: bowlScale }}
                 className="absolute bottom-[5%] left-1/2 z-30 w-[84%] -translate-x-1/2 sm:w-[78%] md:bottom-[4%] md:w-[68%]"
@@ -128,7 +126,6 @@ const whiskRotate = useTransform(
             </motion.div>
           </div>
 
-          {/* Mobilde görselden sonra metin, desktopta solda */}
           <motion.div
             style={{ y: textY }}
             className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24"
@@ -221,7 +218,7 @@ const whiskRotate = useTransform(
           rotate: whiskRotate,
           scale: whiskScale,
         }}
-        className="pointer-events-none absolute right-[-2%] top-[9%] z-[60] w-[140px] sm:right-[2%] sm:top-[9%] sm:w-[175px] md:right-[10%] md:top-[7%] md:w-[340px]"
+        className="pointer-events-none absolute right-[-2%] top-[9%] z-[80] w-[140px] sm:right-[2%] sm:top-[9%] sm:w-[175px] md:right-[10%] md:top-[7%] md:w-[340px]"
       >
         <Image
           src="/images/hero/whisk.png"
@@ -233,8 +230,8 @@ const whiskRotate = useTransform(
         />
       </motion.div>
 
-      {/* Alt açıklama alanı */}
-      <div className="relative z-20 mt-[100px] pb-[120px] sm:mt-[140px] sm:pb-[160px] md:mt-[260px] md:pb-[220px]">
+      {/* Whisk açıklama alanı */}
+      <div className="relative z-20 mt-[100px] pb-[80px] sm:mt-[140px] sm:pb-[120px] md:mt-[260px] md:pb-[140px]">
         <Container>
           <div className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
             <div className="min-h-[80px] md:min-h-[260px]" />
@@ -256,29 +253,124 @@ const whiskRotate = useTransform(
                 sunum için tasarlanan bu özel araç, ritüelinizi tamamlar.
               </p>
             </div>
-
           </div>
         </Container>
-        <div className="relative z-20 mt-[160px] md:mt-[260px]">
-          <div className="relative z-20 mt-[120px] md:mt-[200px]">
-            <Container>
-              <div className="relative flex justify-center">
-                <div className="absolute inset-x-1/2 top-[58%] -z-10 h-[180px] w-[280px] -translate-x-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl md:h-[240px] md:w-[420px]" />
-
-                <Image
-                  src="/images/hero/matcha-collection.png"
-                  alt="Matcha, bowl ve bambu whisk koleksiyonu"
-                  width={1600}
-                  height={900}
-                  priority
-                  className="h-auto w-[420px] max-w-full object-contain sm:w-[520px] md:w-[700px]"
-                />
-              </div>
-            </Container>
-          </div>
-        </div>
       </div>
 
+      {/* Matcha görsel alanı */}
+      <div className="relative z-20 mt-[120px] md:mt-[220px]">
+        <Container>
+          <div className="relative flex justify-center">
+            <div className="absolute inset-x-1/2 top-[58%] -z-10 h-[180px] w-[280px] -translate-x-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl md:h-[240px] md:w-[420px]" />
+
+            <Image
+              src="/images/hero/matcha-collection.png"
+              alt="Matcha, bowl ve bambu whisk koleksiyonu"
+              width={1600}
+              height={900}
+              priority
+              className="h-auto w-[420px] max-w-full object-contain sm:w-[520px] md:w-[700px]"
+            />
+          </div>
+        </Container>
+      </div>
+
+      {/* Satış bilgi alanı */}
+      {/* Satış bilgi alanı */}
+      <div className="relative z-20 mt-[80px] pb-[140px] md:mt-[140px] md:pb-[220px]">
+        <Container>
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* Sol ürün */}
+            <div className="rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+              <div className="flex h-[180px] items-center justify-center">
+                <Image
+                  src="/images/products/matcha-pack.png"
+                  alt="Seremonik matcha ürünü"
+                  width={260}
+                  height={260}
+                  className="h-[180px] w-auto object-contain"
+                />
+              </div>
+
+              <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+                Seremonik Matcha
+              </div>
+
+              <div className="mt-3 text-3xl font-semibold text-[var(--color-text)]">
+                ₺799
+              </div>
+
+              <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+                Yoğun aroma, dengeli tat ve premium kalite sunan seremonik matcha
+                seçkisi.
+              </p>
+
+              <div className="mt-5">
+                <Button className="w-full">Sepete Ekle</Button>
+              </div>
+            </div>
+
+            {/* Orta ürün */}
+            {/* Orta ürün */}
+            <div className="relative rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+
+              {/* Görsel alanı */}
+              <div className="relative flex h-[180px] items-center justify-center">
+                <div className="absolute inset-x-1/2 top-1/2 -z-10 h-[120px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl" />
+                {/* Whisk buraya geliyor */}
+              </div>
+
+              {/* TEXTLER SOLA */}
+              <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+                Bambu Whisk
+              </div>
+
+              <div className="mt-3 text-3xl font-semibold text-[var(--color-text)]">
+                ₺349
+              </div>
+
+              <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+                Daha yumuşak köpük, dengeli karışım ve geleneksel hazırlık hissi için özel
+                bambu whisk.
+              </p>
+
+              <div className="mt-5">
+                <Button className="w-full">Satın Al</Button>
+              </div>
+            </div>
+
+            {/* Sağ ürün */}
+            <div className="rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+              <div className="flex h-[180px] items-center justify-center">
+                <Image
+                  src="/images/products/bowl-product.png"
+                  alt="Matcha bowl ürünü"
+                  width={260}
+                  height={260}
+                  className="h-[180px] w-auto object-contain"
+                />
+              </div>
+
+              <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+                Matcha Bowl
+              </div>
+
+              <div className="mt-3 text-3xl font-semibold text-[var(--color-text)]">
+                ₺649
+              </div>
+
+              <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+                Zarif sunum ve rahat hazırlama için özel tasarlanmış premium bowl
+                koleksiyonu.
+              </p>
+
+              <div className="mt-5">
+                <Button className="w-full">Ürünü İncele</Button>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </div>
     </section>
   );
 }
