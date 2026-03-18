@@ -61,7 +61,7 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [-110, -120, -420, -430, -300, -290, -250]
         : screenType === "iphone12"
-          ? [-150, -150, -310, -150, -120, -150, -150]
+          ? [-150, -150, -240, -120, -20, -150, -150]
           : [-240, -240, -420, -240, -210, -240, -240]
   );
 
@@ -73,7 +73,7 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [-80, 240, 620, 820, 1120, 1280, 1520]
         : screenType === "iphone12"
-          ? [-360, 500, 1130, 1550, 1700, 2200, 2200]
+          ? [-350, 500, 1130, 2250, 2200, 2200, 2200]
           : [-340, 500, 1130, 1550, 1700, 2200, 2200]
   );
   const whiskRotate = useTransform(
@@ -96,8 +96,8 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [0.60, 0.98, 0.68]
         : screenType === "iphone12"
-          ? [1.3, 1.7, 0.98]
-          : [1.3, 1.7, 0.98]
+          ? [1.1, 1.7, 0.98]
+          : [1.3, 1.3, 0.98]
   );
   const powderY = useTransform(scrollYProgress, [0, 1], [70, 80]);
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
