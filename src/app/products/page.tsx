@@ -77,8 +77,8 @@ export default function ProductsPage() {
                     <Image
                       src="/images/products/matcha-pack.png"
                       alt="Seremonik Matcha"
-                      width={420}
-                      height={420}
+                      width={450}
+                      height={450}
                       className={imageClass}
                     />
                   </div>
@@ -165,8 +165,8 @@ export default function ProductsPage() {
                       <Image
                         src={product.image}
                         alt={product.title}
-                        width={420}
-                        height={420}
+                        width={450}
+                        height={450}
                         className={imageClass}
                       />
                     </div>

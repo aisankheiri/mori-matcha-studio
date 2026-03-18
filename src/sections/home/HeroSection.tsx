@@ -1,13 +1,22 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
+import { useCart } from "@/context/CartContext";
+import { useToast } from "@/context/ToastContext";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
+  const { addToCart } = useCart();
+  const { showToast } = useToast();
+  const [heroMatchaSize, setHeroMatchaSize] = useState<"50g" | "100g">("50g");
+
+  const heroMatchaPrice = heroMatchaSize === "50g" ? 399 : 599;
+  const heroMatchaPriceLabel = heroMatchaSize === "50g" ? "₺399" : "₺599";
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -20,8 +29,6 @@ export default function HeroSection() {
   const bgOpacityB = useTransform(scrollYProgress, [0, 1], [0.2, 0.9]);
 
   const sceneY = useTransform(scrollYProgress, [0, 1], [0, 90]);
-
-  // Whisk: önce hero sahnesinde kalır, sonra aşağı iner,
 
   const whiskX = useTransform(
     scrollYProgress,
@@ -40,8 +47,8 @@ export default function HeroSection() {
     [0, 0.4, 0.55, 0.75, 1],
     [-8, 100, 360, 0, 210]
   );
-  const whiskScale = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.96, 0.52]);
 
+  const whiskScale = useTransform(scrollYProgress, [0, 0.8, 1], [1, 0.96, 0.52]);
 
   const powderY = useTransform(scrollYProgress, [0, 1], [70, 80]);
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
@@ -52,6 +59,17 @@ export default function HeroSection() {
 
   const bowlY = useTransform(scrollYProgress, [0, 1], [0, 18]);
   const bowlScale = useTransform(scrollYProgress, [0, 1], [1, 1.015]);
+
+  const handleAddToCart = (
+    id: string,
+    title: string,
+    price: number,
+    image: string,
+    meta?: string
+  ) => {
+    addToCart({ id, title, price, image, meta });
+    showToast("Sepete eklendi");
+  };
 
   return (
     <section
@@ -69,7 +87,7 @@ export default function HeroSection() {
       />
 
       <Container>
-        <div className="grid min-h-[calc(100vh-72px)] items-start gap-10 pb-12 pt-0 md:grid-cols-[0.95fr_1.05fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
+        <div className="grid min-h-[calc(100vh-72px)] items-start gap-10 pb-12 pt-0 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
           <div className="order-1 relative flex min-h-[360px] items-center justify-center sm:min-h-[460px] md:order-2 md:min-h-[860px]">
             <motion.div
               animate={{ scale: [1, 1.04, 1] }}
@@ -128,7 +146,7 @@ export default function HeroSection() {
 
           <motion.div
             style={{ y: textY }}
-            className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24"
+           className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24 md:pl-10 lg:pl-16"
           >
             <motion.span
               initial={{ opacity: 0, y: 14 }}
@@ -143,11 +161,9 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.06 }}
-              className="mt-5 text-3xl font-semibold leading-[0.98] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
+              className="mt-5 text-3xl font-semibold leading-[0.95] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
             >
-              Matcha, Bowl
-              <br />
-              ve Bambu Whisk.
+              Premium matcha deneyimi
             </motion.h1>
 
             <motion.p
@@ -156,9 +172,9 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.14 }}
               className="mt-4 max-w-xl text-sm leading-7 text-[var(--color-text-soft)] sm:text-[15px] md:mt-6 md:text-lg"
             >
-              Premium seremonik matcha, bambu whisk ve özel matcha bowl
-              koleksiyonumuzla geleneksel hazırlama ritüelini modern, zarif ve
-              estetik bir deneyime dönüştürün.
+              Seremonik matcha, bambu whisk ve zarif bowl koleksiyonuyla
+              geleneksel hazırlama deneyimini modern, estetik ve dengeli bir
+              günlük ritüele dönüştürün.
             </motion.p>
 
             <motion.div
@@ -167,10 +183,9 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.22 }}
               className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-8 md:gap-4"
             >
-              <Button className="w-full sm:w-auto">Ürünleri İncele</Button>
-              <Button variant="secondary" className="w-full sm:w-auto">
-                Matcha Setlerini Gör
-              </Button>
+              <Link href="/products" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto">Ürünleri İncele</Button>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -210,7 +225,6 @@ export default function HeroSection() {
         </div>
       </Container>
 
-      {/* Whisk */}
       <motion.div
         style={{
           x: whiskX,
@@ -230,7 +244,6 @@ export default function HeroSection() {
         />
       </motion.div>
 
-      {/* Whisk açıklama alanı */}
       <div className="relative z-20 mt-[100px] pb-[80px] sm:mt-[140px] sm:pb-[120px] md:mt-[260px] md:pb-[140px]">
         <Container>
           <div className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
@@ -257,7 +270,6 @@ export default function HeroSection() {
         </Container>
       </div>
 
-      {/* Matcha görsel alanı */}
       <div className="relative z-20 mt-[120px] md:mt-[220px]">
         <Container>
           <div className="relative flex justify-center">
@@ -275,102 +287,172 @@ export default function HeroSection() {
         </Container>
       </div>
 
-      {/* Satış bilgi alanı */}
-      {/* Satış bilgi alanı */}
-      <div className="relative z-20 mt-[80px] pb-[140px] md:mt-[140px] md:pb-[220px]">
-        <Container>
-          <div className="grid gap-6 md:grid-cols-3">
-            {/* Sol ürün */}
-            <div className="rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
-              <div className="flex h-[180px] items-center justify-center">
-                <Image
-                  src="/images/products/matcha-pack.png"
-                  alt="Seremonik matcha ürünü"
-                  width={260}
-                  height={260}
-                  className="h-[180px] w-auto object-contain"
-                />
-              </div>
+ <div className="relative z-20 mt-[80px] pb-[140px] md:mt-[140px] md:pb-[220px]">
+  <Container>
+    <div className="grid gap-6 md:grid-cols-3">
+  {/* Matcha */}
+<div className="flex h-full flex-col rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+  
+  <div className="flex h-[180px] items-center justify-center">
+    <Image
+      src="/images/products/matcha-pack.png"
+      alt="Seremonik matcha ürünü"
+      width={260}
+      height={260}
+      className="h-[180px] w-auto object-contain"
+    />
+  </div>
 
-              <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                Seremonik Matcha
-              </div>
+  {/* SADE BAŞLIK */}
+  <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+    Seremonik Matcha
+  </div>
 
-              <div className="mt-3 text-3xl font-semibold text-[var(--color-text)]">
-                ₺799
-              </div>
+  <div className="mt-3 flex flex-1 flex-col">
 
-              <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                Yoğun aroma, dengeli tat ve premium kalite sunan seremonik matcha
-                seçkisi.
-              </p>
-
-              <div className="mt-5">
-                <Button className="w-full">Sepete Ekle</Button>
-              </div>
-            </div>
-
-            {/* Orta ürün */}
-            {/* Orta ürün */}
-            <div className="relative rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
-
-              {/* Görsel alanı */}
-              <div className="relative flex h-[180px] items-center justify-center">
-                <div className="absolute inset-x-1/2 top-1/2 -z-10 h-[120px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl" />
-                {/* Whisk buraya geliyor */}
-              </div>
-
-              {/* TEXTLER SOLA */}
-              <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                Bambu Whisk
-              </div>
-
-              <div className="mt-3 text-3xl font-semibold text-[var(--color-text)]">
-                ₺349
-              </div>
-
-              <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                Daha yumuşak köpük, dengeli karışım ve geleneksel hazırlık hissi için özel
-                bambu whisk.
-              </p>
-
-              <div className="mt-5">
-                <Button className="w-full">Satın Al</Button>
-              </div>
-            </div>
-
-            {/* Sağ ürün */}
-            <div className="rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
-              <div className="flex h-[180px] items-center justify-center">
-                <Image
-                  src="/images/products/bowl-product.png"
-                  alt="Matcha bowl ürünü"
-                  width={260}
-                  height={260}
-                  className="h-[180px] w-auto object-contain"
-                />
-              </div>
-
-              <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                Matcha Bowl
-              </div>
-
-              <div className="mt-3 text-3xl font-semibold text-[var(--color-text)]">
-                ₺649
-              </div>
-
-              <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                Zarif sunum ve rahat hazırlama için özel tasarlanmış premium bowl
-                koleksiyonu.
-              </p>
-
-              <div className="mt-5">
-                <Button className="w-full">Ürünü İncele</Button>
-              </div>
-            </div>
-          </div>
-        </Container>
+    {/* 🔥 FİYAT + GRAMAJ AYNI SATIR */}
+    <div className="flex items-center justify-between gap-3">
+      
+      <div className="text-3xl font-semibold text-[var(--color-text)]">
+        {heroMatchaPriceLabel}
       </div>
+
+      <div className="flex items-center gap-1 rounded-full border border-[#6B8F71]/15 bg-white/70 p-1 backdrop-blur-md">
+        
+        <button
+          onClick={() => setHeroMatchaSize("50g")}
+          className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition ${
+            heroMatchaSize === "50g"
+              ? "bg-[var(--color-primary)] text-white shadow"
+              : "text-[var(--color-text-soft)]"
+          }`}
+        >
+          50g
+        </button>
+
+        <button
+          onClick={() => setHeroMatchaSize("100g")}
+          className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition ${
+            heroMatchaSize === "100g"
+              ? "bg-[var(--color-primary)] text-white shadow"
+              : "text-[var(--color-text-soft)]"
+          }`}
+        >
+          100g
+        </button>
+
+      </div>
+    </div>
+
+    <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+      Yoğun aroma, dengeli tat ve premium kalite sunan seremonik
+      matcha seçkisi.
+    </p>
+
+    <div className="mt-auto pt-5">
+      <Button
+        className="w-full"
+        onClick={() =>
+          handleAddToCart(
+            `hero-matcha-${heroMatchaSize}`,
+            "Seremonik Matcha",
+            heroMatchaPrice,
+            "/images/products/matcha-pack.png",
+            heroMatchaSize === "50g" ? "50 gr" : "100 gr"
+          )
+        }
+      >
+        Sepete Ekle
+      </Button>
+    </div>
+
+  </div>
+</div>
+
+      {/* Whisk */}
+      <div className="flex h-full flex-col rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+        <div className="relative flex h-[180px] items-center justify-center">
+          <div className="absolute inset-x-1/2 top-1/2 -z-10 h-[120px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl" />
+        </div>
+
+        <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+          Bambu Whisk
+        </div>
+
+        <div className="mt-3 flex flex-1 flex-col">
+          <div className="text-3xl font-semibold text-[var(--color-text)]">
+            ₺349
+          </div>
+
+          <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+            Daha yumuşak köpük, dengeli karışım ve geleneksel hazırlık hissi
+            için özel bambu whisk.
+          </p>
+
+          <div className="mt-auto pt-5">
+            <Button
+              className="w-full"
+              onClick={() =>
+                handleAddToCart(
+                  "hero-whisk",
+                  "Bambu Whisk",
+                  349,
+                  "/images/hero/whisk.png"
+                )
+              }
+            >
+              Sepete Ekle
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bowl */}
+      <div className="flex h-full flex-col rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+        <div className="flex h-[180px] items-center justify-center">
+          <Image
+            src="/images/products/bowl-product.png"
+            alt="Matcha bowl ürünü"
+            width={260}
+            height={260}
+            className="h-[180px] w-auto object-contain"
+          />
+        </div>
+
+        <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+          Matcha Bowl
+        </div>
+
+        <div className="mt-3 flex flex-1 flex-col">
+          <div className="text-3xl font-semibold text-[var(--color-text)]">
+            ₺649
+          </div>
+
+          <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
+            Zarif sunum ve rahat hazırlama için özel tasarlanmış premium
+            bowl koleksiyonu.
+          </p>
+
+          <div className="mt-auto pt-5">
+            <Button
+              className="w-full"
+              onClick={() =>
+                handleAddToCart(
+                  "hero-bowl",
+                  "Matcha Bowl",
+                  649,
+                  "/images/products/bowl-product.png"
+                )
+              }
+            >
+              Sepete Ekle
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</div>
     </section>
   );
 }
