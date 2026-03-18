@@ -14,10 +14,26 @@ export default function HeroSection() {
   const { addToCart } = useCart();
   const { showToast } = useToast();
   const [heroMatchaSize, setHeroMatchaSize] = useState<"50g" | "100g">("50g");
-  const [isDesktop, setIsDesktop] = useState(false);
+
+  const [screenType, setScreenType] = useState<
+    "mobile" | "iphone12" | "ipadair" | "desktop"
+  >("mobile");
 
   useEffect(() => {
-    const updateScreen = () => setIsDesktop(window.innerWidth >= 768);
+    const updateScreen = () => {
+      const w = window.innerWidth;
+
+      if (w >= 1180) {
+        setScreenType("desktop");
+      } else if (w >= 760 && w <= 900) {
+        setScreenType("ipadair");
+      } else if (w >= 380 && w <= 430) {
+        setScreenType("iphone12");
+      } else {
+        setScreenType("mobile");
+      }
+    };
+
     updateScreen();
     window.addEventListener("resize", updateScreen);
     return () => window.removeEventListener("resize", updateScreen);
@@ -40,31 +56,48 @@ export default function HeroSection() {
   const whiskX = useTransform(
     scrollYProgress,
     [0, 0.25, 0.4, 0.6, 0.7, 0.92, 1],
-    isDesktop
+    screenType === "desktop"
       ? [-160, -150, -700, -790, -560, -580, -450]
-      : [-240, -240, -420, -240, -210, -240, -240]
+      : screenType === "ipadair"
+        ? [-110, -120, -420, -430, -300, -290, -250]
+        : screenType === "iphone12"
+          ? [-150, -150, -310, -150, -120, -150, -150]
+          : [-240, -240, -420, -240, -210, -240, -240]
   );
 
   const whiskY = useTransform(
     scrollYProgress,
     [0, 0.25, 0.4, 0.6, 0.7, 0.92, 1],
-    isDesktop
+    screenType === "desktop"
       ? [-100, 390, 900, 1100, 1600, 1570, 2100]
-      : [-340, 500, 1130, 1550, 1700, 2200,2200]
+      : screenType === "ipadair"
+        ? [-80, 240, 620, 820, 1120, 1280, 1520]
+        : screenType === "iphone12"
+          ? [-360, 500, 1130, 1550, 1700, 2200, 2200]
+          : [-340, 500, 1130, 1550, 1700, 2200, 2200]
   );
-
   const whiskRotate = useTransform(
     scrollYProgress,
     [0, 0.4, 0.55, 0.6, 0.75, 1],
-    isDesktop
+    screenType === "desktop"
       ? [-8, 100, 360, 360, 0, 210]
-      : [-8, 180, 200, 180, 360, 80]
+      : screenType === "ipadair"
+        ? [-8, 70, 220, 220, 120, 110]
+        : screenType === "iphone12"
+          ? [-8, 180, 200, 180, 360, 80]
+          : [-8, 180, 200, 180, 360, 80]
   );
 
   const whiskScale = useTransform(
     scrollYProgress,
     [0, 0.8, 1],
-    isDesktop ? [1, 0.96, 0.52] : [1.3, 1.7, 0.98]
+    screenType === "desktop"
+      ? [1, 0.96, 0.52]
+      : screenType === "ipadair"
+        ? [0.60, 0.98, 0.68]
+        : screenType === "iphone12"
+          ? [1.3, 1.7, 0.98]
+          : [1.3, 1.7, 0.98]
   );
   const powderY = useTransform(scrollYProgress, [0, 1], [70, 80]);
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
@@ -117,7 +150,7 @@ export default function HeroSection() {
             >
               <motion.div
                 style={{ y: powderY, rotate: powderRotate }}
-               className="absolute left-[32%] top-[-20%] z-10 w-[54%] sm:left-[32%] sm:top-[22%] sm:w-[54%] md:left-[30%] md:top-[22%] md:w-[50%]"
+                className="absolute left-[32%] top-[-20%] z-10 w-[54%] sm:left-[32%] sm:top-[22%] sm:w-[54%] md:left-[30%] md:top-[22%] md:w-[50%]"
               >
                 <Image
                   src="/images/hero/powder.png"
