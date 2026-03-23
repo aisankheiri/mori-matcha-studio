@@ -66,8 +66,8 @@ export default function Navbar() {
                 <button
                   onClick={() => setLang("TR")}
                   className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 ${lang === "TR"
-                      ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
-                      : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
+                    ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
+                    : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
                     }`}
                 >
                   TR
@@ -76,8 +76,8 @@ export default function Navbar() {
                 <button
                   onClick={() => setLang("EN")}
                   className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 ${lang === "EN"
-                      ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
-                      : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
+                    ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
+                    : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
                     }`}
                 >
                   EN
@@ -89,8 +89,8 @@ export default function Navbar() {
                 {totalItems > 0 && (
                   <span
                     className={`absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold ${pathname === "/cart"
-                        ? "bg-white text-[var(--color-primary-dark)]"
-                        : "bg-[var(--color-primary)] text-white"
+                      ? "bg-white text-[var(--color-primary-dark)]"
+                      : "bg-[var(--color-primary)] text-white"
                       }`}
                   >
                     {totalItems}
@@ -114,8 +114,8 @@ export default function Navbar() {
                 {totalItems > 0 && (
                   <span
                     className={`absolute -right-1 -top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full px-1 text-[9px] font-semibold ${pathname === "/cart"
-                        ? "bg-white text-[var(--color-primary-dark)]"
-                        : "bg-[var(--color-primary)] text-white"
+                      ? "bg-white text-[var(--color-primary-dark)]"
+                      : "bg-[var(--color-primary)] text-white"
                       }`}
                   >
                     {totalItems}
@@ -123,13 +123,13 @@ export default function Navbar() {
                 )}
               </Link>
 
-              <div className="flex items-center rounded-full border border-[#6B8F71]/15 bg-white/70 p-[1px] backdrop-blur-xl">
+              <div className="flex items-center rounded-full border border-[#6B8F71]/10 bg-white/60 p-[1px] backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
 
                 <button
                   onClick={() => setLang("TR")}
-                  className={`rounded-full px-1.5 py-[2px] text-[9px] font-medium transition-all duration-300 ${lang === "TR"
-                      ? "bg-[var(--color-primary)] text-white shadow-[0_4px_10px_rgba(107,143,113,0.2)]"
-                      : "text-[var(--color-text-soft)] opacity-70"
+                  className={`rounded-full px-[5px] py-[1px] text-[7px] font-medium tracking-wide transition-all duration-300 ${lang === "TR"
+                      ? "bg-[var(--color-primary)] text-white"
+                      : "text-[var(--color-text-soft)] opacity-50"
                     }`}
                 >
                   TR
@@ -137,9 +137,9 @@ export default function Navbar() {
 
                 <button
                   onClick={() => setLang("EN")}
-                  className={`rounded-full px-1.5 py-[2px] text-[9px] font-medium transition-all duration-300 ${lang === "EN"
-                      ? "bg-[var(--color-primary)] text-white shadow-[0_4px_10px_rgba(107,143,113,0.2)]"
-                      : "text-[var(--color-text-soft)] opacity-70"
+                  className={`rounded-full px-[5px] py-[1px] text-[7px] font-medium tracking-wide transition-all duration-300 ${lang === "EN"
+                      ? "bg-[var(--color-primary)] text-white"
+                      : "text-[var(--color-text-soft)] opacity-50"
                     }`}
                 >
                   EN
