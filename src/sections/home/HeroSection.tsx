@@ -73,7 +73,7 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [-80, 240, 620, 820, 1120, 1280, 1520]
         : screenType === "iphone12"
-          ? [-350, 500, 1130, 2250, 2200, 2200, 2200]
+          ? [-250, 500, 1130, 1350, 1600, 1750, 1650]
           : [-340, 500, 1130, 1550, 1700, 2200, 2200]
   );
   const whiskRotate = useTransform(
@@ -84,7 +84,7 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [-8, 70, 220, 220, 120, 110]
         : screenType === "iphone12"
-          ? [-8, 180, 200, 180, 360, 80]
+          ? [-8, 200, 200, 180, 360, 80]
           : [-8, 180, 200, 180, 360, 80]
   );
 
@@ -96,17 +96,25 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [0.60, 0.98, 0.68]
         : screenType === "iphone12"
-          ? [1.1, 1.7, 0.98]
+          ? [1.1, 1.5, 1.1]
           : [1.3, 1.3, 0.98]
   );
-  const powderY = useTransform(scrollYProgress, [0, 1], [70, 80]);
+const powderY = useTransform(
+  scrollYProgress,
+  [0, 1],
+  screenType === "desktop" ? [70, 80] : [100, 110] // mobilde aşağı iner
+);
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
 
   const leavesY = useTransform(scrollYProgress, [0, 1], [0, 28]);
   const leavesX = useTransform(scrollYProgress, [0, 1], [0, -10]);
   const leavesRotate = useTransform(scrollYProgress, [0, 1], [0, -4]);
 
-  const bowlY = useTransform(scrollYProgress, [0, 1], [0, 18]);
+ const bowlY = useTransform(
+  scrollYProgress,
+  [0, 1],
+  screenType === "desktop" ? [0, 18] : [60, 90]
+);
   const bowlScale = useTransform(scrollYProgress, [0, 1], [1, 1.015]);
 
   const handleAddToCart = (
@@ -136,8 +144,8 @@ export default function HeroSection() {
       />
 
       <Container>
-        <div className="grid min-h-[calc(100vh-72px)] items-start gap-10 pb-12 pt-0 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
-          <div className="order-1 relative flex min-h-[360px] items-center justify-center sm:min-h-[460px] md:order-2 md:min-h-[860px]">
+       <div className="grid min-h-[calc(100vh-72px)] items-start gap-5 pb-6 pt-0 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
+<div className="order-1 relative flex min-h-[300px] items-center justify-center sm:min-h-[420px] md:order-2 md:min-h-[860px]">
             <motion.div
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -146,7 +154,7 @@ export default function HeroSection() {
 
             <motion.div
               style={{ y: sceneY }}
-              className="relative h-[330px] w-full max-w-[300px] sm:h-[450px] sm:max-w-[390px] md:h-[760px] md:max-w-[640px]"
+             className="relative h-[280px] w-full max-w-[260px] sm:h-[420px] sm:max-w-[360px] md:h-[760px] md:max-w-[640px]"
             >
               <motion.div
                 style={{ y: powderY, rotate: powderRotate }}
@@ -195,7 +203,7 @@ export default function HeroSection() {
 
           <motion.div
             style={{ y: textY }}
-            className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24 md:pl-10 lg:pl-16"
+          className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24 md:pl-10 lg:pl-16"
           >
             <motion.span
               initial={{ opacity: 0, y: 14 }}
@@ -210,7 +218,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.06 }}
-              className="mt-5 text-3xl font-semibold leading-[0.95] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
+             className="mt-3 text-[28px] font-semibold leading-[0.95] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
             >
               Premium matcha deneyimi
             </motion.h1>
@@ -219,7 +227,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.14 }}
-              className="mt-4 max-w-xl text-sm leading-7 text-[var(--color-text-soft)] sm:text-[15px] md:mt-6 md:text-lg"
+            className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-text-soft)] sm:text-[15px] md:mt-6 md:text-lg"
             >
               Seremonik matcha, bambu whisk ve zarif bowl koleksiyonuyla
               geleneksel hazırlama deneyimini modern, estetik ve dengeli bir
@@ -230,7 +238,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.22 }}
-              className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-8 md:gap-4"
+              className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap md:mt-8 md:gap-4"
             >
               <Link href="/products" className="w-full sm:w-auto">
                 <Button className="w-full sm:w-auto">Ürünleri İncele</Button>
@@ -241,7 +249,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="mt-8 grid max-w-xl grid-cols-1 gap-3 sm:grid-cols-3 md:mt-10"
+              className="mt-5 grid max-w-xl grid-cols-1 gap-2.5 sm:grid-cols-3 md:mt-10"
             >
               <div className="rounded-[22px] border border-white/60 bg-white/60 p-4 shadow-[var(--shadow-soft)] backdrop-blur-lg">
                 <div className="text-lg font-semibold text-[var(--color-text)]">
@@ -293,7 +301,7 @@ export default function HeroSection() {
         />
       </motion.div>
 
-      <div className="relative z-20 mt-[100px] pb-[80px] sm:mt-[140px] sm:pb-[120px] md:mt-[260px] md:pb-[140px]">
+      <div className="relative z-20 mt-[-55px] pb-[50px] sm:mt-[90px] sm:pb-[90px] md:mt-[260px] md:pb-[140px]">
         <Container>
           <div className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-16">
             <div className="min-h-[80px] md:min-h-[260px]" />
@@ -319,7 +327,7 @@ export default function HeroSection() {
         </Container>
       </div>
 
-      <div className="relative z-20 mt-[120px] md:mt-[220px]">
+      <div className="relative z-20 mt-[-50px] md:mt-[220px]">
         <Container>
           <div className="relative flex justify-center">
             <div className="absolute inset-x-1/2 top-[58%] -z-10 h-[180px] w-[280px] -translate-x-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl md:h-[240px] md:w-[420px]" />
@@ -336,7 +344,7 @@ export default function HeroSection() {
         </Container>
       </div>
 
-      <div className="relative z-20 mt-[80px] pb-[140px] md:mt-[140px] md:pb-[220px]">
+      <div className="relative z-20 mt-[80px] pb-[10px] md:mt-[140px] md:pb-[220px]">
         <Container>
           <div className="grid gap-6 md:grid-cols-3">
             {/* Matcha */}
