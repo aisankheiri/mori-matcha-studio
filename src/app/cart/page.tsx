@@ -137,9 +137,7 @@ export default function CartPage() {
                           shipping === 0 ? "font-medium text-green-600" : ""
                         }
                       >
-                        {shipping === 0
-                          ? t.cart.freeShipping
-                          : "₺80"}
+                        {shipping === 0 ? t.cart.freeShipping : "₺80"}
                       </span>
                     </div>
 
