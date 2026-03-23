@@ -24,11 +24,11 @@ export default function CartPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[var(--color-bg)] pt-10 pb-20 md:pt-14">
+      <main className="min-h-screen bg-[var(--color-bg)] pt-20 pb-20 md:pt-24">
         <Container>
           <div className="mx-auto w-full max-w-[var(--container-width)]">
             {items.length === 0 ? (
-              <div className="mt-3 rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
+              <div className="rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
                 <div className="text-lg font-semibold text-[var(--color-text)]">
                   Sepetiniz şu an boş
                 </div>
