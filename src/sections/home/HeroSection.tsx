@@ -73,7 +73,7 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [-80, 240, 620, 820, 1120, 1280, 1520]
         : screenType === "iphone12"
-          ? [-250, 500, 1130, 1350, 1600, 1750, 1650]
+          ? [-225, 500, 1130, 1350, 1600, 1750, 1650]
           : [-340, 500, 1130, 1550, 1700, 2200, 2200]
   );
   const whiskRotate = useTransform(
@@ -96,25 +96,25 @@ export default function HeroSection() {
       : screenType === "ipadair"
         ? [0.60, 0.98, 0.68]
         : screenType === "iphone12"
-          ? [1.1, 1.5, 1.1]
+          ? [0.9, 1.5, 1.1]
           : [1.3, 1.3, 0.98]
   );
-const powderY = useTransform(
-  scrollYProgress,
-  [0, 1],
-  screenType === "desktop" ? [70, 80] : [100, 110] // mobilde aşağı iner
-);
+  const powderY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    screenType === "desktop" ? [70, 80] : [140, 110] // mobilde aşağı iner
+  );
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
 
   const leavesY = useTransform(scrollYProgress, [0, 1], [0, 28]);
   const leavesX = useTransform(scrollYProgress, [0, 1], [0, -10]);
   const leavesRotate = useTransform(scrollYProgress, [0, 1], [0, -4]);
 
- const bowlY = useTransform(
-  scrollYProgress,
-  [0, 1],
-  screenType === "desktop" ? [0, 18] : [60, 90]
-);
+  const bowlY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    screenType === "desktop" ? [0, 18] : [70, 90]
+  );
   const bowlScale = useTransform(scrollYProgress, [0, 1], [1, 1.015]);
 
   const handleAddToCart = (
@@ -144,8 +144,8 @@ const powderY = useTransform(
       />
 
       <Container>
-       <div className="grid min-h-[calc(100vh-72px)] items-start gap-5 pb-6 pt-0 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
-<div className="order-1 relative flex min-h-[300px] items-center justify-center sm:min-h-[420px] md:order-2 md:min-h-[860px]">
+        <div className="grid min-h-[calc(100vh-72px)] items-start gap-5 pb-6 pt-0 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
+          <div className="order-1 relative flex min-h-[300px] items-center justify-center sm:min-h-[420px] md:order-2 md:min-h-[860px]">
             <motion.div
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -154,7 +154,7 @@ const powderY = useTransform(
 
             <motion.div
               style={{ y: sceneY }}
-             className="relative h-[280px] w-full max-w-[260px] sm:h-[420px] sm:max-w-[360px] md:h-[760px] md:max-w-[640px]"
+              className="relative h-[280px] w-full max-w-[260px] sm:h-[420px] sm:max-w-[360px] md:h-[760px] md:max-w-[640px]"
             >
               <motion.div
                 style={{ y: powderY, rotate: powderRotate }}
@@ -203,7 +203,7 @@ const powderY = useTransform(
 
           <motion.div
             style={{ y: textY }}
-          className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24 md:pl-10 lg:pl-16"
+            className="order-2 relative z-10 max-w-2xl md:order-1 md:-mt-24 md:pl-10 lg:pl-16"
           >
             <motion.span
               initial={{ opacity: 0, y: 14 }}
@@ -218,7 +218,7 @@ const powderY = useTransform(
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.06 }}
-             className="mt-3 text-[28px] font-semibold leading-[0.95] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
+              className="mt-3 text-[28px] font-semibold leading-[0.95] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
             >
               Premium matcha deneyimi
             </motion.h1>
@@ -227,7 +227,7 @@ const powderY = useTransform(
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.14 }}
-            className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-text-soft)] sm:text-[15px] md:mt-6 md:text-lg"
+              className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-text-soft)] sm:text-[15px] md:mt-6 md:text-lg"
             >
               Seremonik matcha, bambu whisk ve zarif bowl koleksiyonuyla
               geleneksel hazırlama deneyimini modern, estetik ve dengeli bir
