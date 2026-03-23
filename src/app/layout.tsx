@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
+import { LangProvider } from "@/context/LangContext";
 
 export const metadata: Metadata = {
   title: "Mori Matcha",
@@ -16,11 +17,11 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body>
-        <CartProvider>
-          <ToastProvider>
-            {children}
-          </ToastProvider>
-        </CartProvider>
+        <LangProvider>
+          <CartProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </CartProvider>
+        </LangProvider>
       </body>
     </html>
   );

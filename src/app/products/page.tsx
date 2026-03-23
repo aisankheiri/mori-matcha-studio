@@ -7,50 +7,51 @@ import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
+import { useLang } from "@/context/LangContext";
+import { dict } from "@/i18n/dict";
 
 type MatchaSize = "50g" | "100g";
-
-const simpleProducts = [
-  {
-    slug: "bamboo-whisk",
-    title: "Bambu Whisk",
-    price: 349,
-    description:
-      "Daha yumuşak köpük ve geleneksel hazırlık hissi için tasarlanmış özel bambu whisk.",
-    image: "/images/hero/whisk.png",
-    tag: "Ritüel Aracı",
-  },
-  {
-    slug: "matcha-bowl",
-    title: "Matcha Bowl",
-    price: 649,
-    description:
-      "Hazırlama ve sunum deneyimini daha zarif hale getiren premium bowl koleksiyonu.",
-    image: "/images/products/bowl-product.png",
-    tag: "Zarif Sunum",
-  },
-  {
-    slug: "matcha-spoon",
-    title: "Matcha Kaşığı",
-    price: 199,
-    description:
-      "Doğru ölçü ve daha estetik hazırlık deneyimi için zarif matcha kaşığı.",
-    image: "/images/products/matcha-spoon.png",
-    tag: "Hazırlık Aksesuarı",
-  },
-];
 
 export default function ProductsPage() {
   const [matchaSize, setMatchaSize] = useState<MatchaSize>("50g");
   const { addToCart } = useCart();
   const { showToast } = useToast();
+  const { lang } = useLang();
+  const t = dict[lang];
 
   const matchaPrice = matchaSize === "50g" ? 399 : 599;
   const matchaPriceLabel = matchaSize === "50g" ? "₺399" : "₺599";
   const matchaDescription =
     matchaSize === "50g"
-      ? "Günlük kullanım için ideal, premium seremonik matcha."
-      : "Daha uzun süreli kullanım için ekonomik ve premium 100 gr seremonik matcha.";
+      ? t.products.matchaDescription50
+      : t.products.matchaDescription100;
+
+  const simpleProducts = [
+    {
+      slug: "bamboo-whisk",
+      title: t.products.bambooWhisk,
+      price: 349,
+      description: t.products.bambooWhiskDescription,
+      image: "/images/hero/whisk.png",
+      tag: t.products.bambooWhiskTag,
+    },
+    {
+      slug: "matcha-bowl",
+      title: t.products.matchaBowl,
+      price: 649,
+      description: t.products.matchaBowlDescription,
+      image: "/images/products/bowl-product.png",
+      tag: t.products.matchaBowlTag,
+    },
+    {
+      slug: "matcha-spoon",
+      title: t.products.matchaSpoon,
+      price: 199,
+      description: t.products.matchaSpoonDescription,
+      image: "/images/products/matcha-spoon.png",
+      tag: t.products.matchaSpoonTag,
+    },
+  ];
 
   const imageWrapClass =
     "relative flex h-[240px] items-center justify-center overflow-hidden md:h-[280px]";
@@ -76,7 +77,7 @@ export default function ProductsPage() {
                     <div className="absolute inset-x-1/2 top-1/2 -z-10 h-[140px] w-[220px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dce8d8]/28 blur-3xl" />
                     <Image
                       src="/images/products/matcha-pack.png"
-                      alt="Seremonik Matcha"
+                      alt={t.products.ceremonialMatcha}
                       width={450}
                       height={450}
                       className={imageClass}
@@ -87,16 +88,16 @@ export default function ProductsPage() {
 
                   <div className="pt-1">
                     <span className="inline-flex rounded-full border border-[#6B8F71]/15 px-3 py-1 text-[9px] font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                      Premium Matcha
+                      {t.products.premiumMatcha}
                     </span>
 
                     <h2 className="mt-4 text-2xl font-semibold tracking-tight text-[var(--color-text)] md:text-3xl">
-                      Seremonik Matcha
+                      {t.products.ceremonialMatcha}
                     </h2>
 
                     <div className="mt-4 flex flex-col gap-3">
                       <div className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--color-primary-dark)]">
-                        Gramaj Seçin
+                        {t.products.selectWeight}
                       </div>
 
                       <div className="flex flex-wrap gap-3">
@@ -109,7 +110,7 @@ export default function ProductsPage() {
                             onChange={() => setMatchaSize("50g")}
                             className="accent-[var(--color-primary)]"
                           />
-                          50 gr
+                          {t.products.weight50}
                         </label>
 
                         <label className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-[#6B8F71]/15 px-4 py-2 text-sm text-[var(--color-text)]">
@@ -121,7 +122,7 @@ export default function ProductsPage() {
                             onChange={() => setMatchaSize("100g")}
                             className="accent-[var(--color-primary)]"
                           />
-                          100 gr
+                          {t.products.weight100}
                         </label>
                       </div>
                     </div>
@@ -139,15 +140,18 @@ export default function ProductsPage() {
                         onClick={() => {
                           addToCart({
                             id: `matcha-${matchaSize}`,
-                            title: "Seremonik Matcha",
+                            title: t.products.ceremonialMatcha,
                             price: matchaPrice,
                             image: "/images/products/matcha-pack.png",
-                            meta: matchaSize === "50g" ? "50 gr" : "100 gr",
+                            meta:
+                              matchaSize === "50g"
+                                ? t.products.weight50
+                                : t.products.weight100,
                           });
-                          showToast("Sepete eklendi");
+                          showToast(t.products.toastAdded);
                         }}
                       >
-                        Sepete Ekle
+                        {t.products.addToCart}
                       </Button>
                     </div>
                   </div>
@@ -199,10 +203,10 @@ export default function ProductsPage() {
                               price: product.price,
                               image: product.image,
                             });
-                            showToast("Sepete eklendi");
+                            showToast(t.products.toastAdded);
                           }}
                         >
-                          Sepete Ekle
+                          {t.products.addToCart}
                         </Button>
                       </div>
                     </div>

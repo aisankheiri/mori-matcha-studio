@@ -8,12 +8,16 @@ import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
+import { useLang } from "@/context/LangContext";
+import { dict } from "@/i18n/dict";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const { addToCart } = useCart();
   const { showToast } = useToast();
   const [heroMatchaSize, setHeroMatchaSize] = useState<"50g" | "100g">("50g");
+  const { lang } = useLang();
+  const t = dict[lang];
 
   const [screenType, setScreenType] = useState<
     "mobile" | "iphone12" | "ipadair" | "desktop"
@@ -53,16 +57,17 @@ export default function HeroSection() {
   const bgOpacityB = useTransform(scrollYProgress, [0, 1], [0.2, 0.9]);
 
   const sceneY = useTransform(scrollYProgress, [0, 1], [0, 90]);
+
   const whiskX = useTransform(
     scrollYProgress,
     [0, 0.25, 0.4, 0.6, 0.7, 0.92, 1],
     screenType === "desktop"
       ? [-160, -150, -700, -790, -560, -580, -450]
       : screenType === "ipadair"
-        ? [0, -140, -420, -330, -300, -10, -250]
-        : screenType === "iphone12"
-          ? [-150, -150, -240, -120, -20, -150, -150]
-          : [-150, -150, -240, -120, -20, -150, -150]
+      ? [0, -140, -420, -330, -300, -10, -250]
+      : screenType === "iphone12"
+      ? [-150, -150, -240, -120, -20, -150, -150]
+      : [-150, -150, -240, -120, -20, -150, -150]
   );
 
   const whiskY = useTransform(
@@ -71,21 +76,22 @@ export default function HeroSection() {
     screenType === "desktop"
       ? [-100, 390, 900, 1100, 1600, 1570, 2100]
       : screenType === "ipadair"
-        ? [-120, 440, 920, 1920, 2330, 2280, 2220]
-        : screenType === "iphone12"
-          ? [-225, 500, 1130, 1350, 1600, 1750, 1650]
-          : [-225, 500, 1130, 1350, 1600, 1750, 1650]
+      ? [-120, 440, 920, 1920, 2330, 2280, 2220]
+      : screenType === "iphone12"
+      ? [-225, 500, 1130, 1350, 1600, 1750, 1650]
+      : [-225, 500, 1130, 1350, 1600, 1750, 1650]
   );
+
   const whiskRotate = useTransform(
     scrollYProgress,
     [0, 0.4, 0.55, 0.6, 0.75, 1],
     screenType === "desktop"
       ? [-8, 100, 360, 360, 0, 210]
       : screenType === "ipadair"
-        ? [-8, 70, 180, 180, 360, 180]
-        : screenType === "iphone12"
-          ? [-8, 200, 200, 180, 360, 80]
-          : [-8, 200, 200, 180, 360, 80]
+      ? [-8, 70, 180, 180, 360, 180]
+      : screenType === "iphone12"
+      ? [-8, 200, 200, 180, 360, 80]
+      : [-8, 200, 200, 180, 360, 80]
   );
 
   const whiskScale = useTransform(
@@ -94,20 +100,22 @@ export default function HeroSection() {
     screenType === "desktop"
       ? [1, 0.96, 0.52]
       : screenType === "ipadair"
-        ? [0.60, 0.78, 0.68]
-        : screenType === "iphone12"
-          ? [0.9, 1.5, 1.1]
-          : [0.9, 1.5, 1.1]
+      ? [0.6, 0.78, 0.68]
+      : screenType === "iphone12"
+      ? [0.9, 1.5, 1.1]
+      : [0.9, 1.5, 1.1]
   );
+
   const powderY = useTransform(
     scrollYProgress,
     [0, 1],
     screenType === "desktop"
       ? [70, 80]
       : screenType === "ipadair"
-        ? [10, 80]
-        : [140, 110] // mobilde aşağı iner
+      ? [10, 80]
+      : [140, 110]
   );
+
   const powderRotate = useTransform(scrollYProgress, [0, 1], [0, 6]);
 
   const leavesY = useTransform(scrollYProgress, [0, 1], [0, 28]);
@@ -117,12 +125,13 @@ export default function HeroSection() {
   const bowlY = useTransform(
     scrollYProgress,
     [0, 1],
-    screenType === "desktop" 
-    ? [0, 18] 
-     : screenType === "ipadair"
-        ? [-210, 80]
-    : [70, 90]
+    screenType === "desktop"
+      ? [0, 18]
+      : screenType === "ipadair"
+      ? [-210, 80]
+      : [70, 90]
   );
+
   const bowlScale = useTransform(scrollYProgress, [0, 1], [1, 1.015]);
 
   const handleAddToCart = (
@@ -133,7 +142,7 @@ export default function HeroSection() {
     meta?: string
   ) => {
     addToCart({ id, title, price, image, meta });
-    showToast("Sepete eklendi");
+    showToast(t.products.toastAdded);
   };
 
   return (
@@ -170,7 +179,7 @@ export default function HeroSection() {
               >
                 <Image
                   src="/images/hero/powder.png"
-                  alt="Matcha tozu sıçrama efekti"
+                  alt={t.hero.powderImageAlt}
                   width={520}
                   height={520}
                   priority
@@ -184,7 +193,7 @@ export default function HeroSection() {
               >
                 <Image
                   src="/images/hero/leaves.png"
-                  alt="Matcha yaprakları"
+                  alt={t.hero.leavesImageAlt}
                   width={240}
                   height={240}
                   className="h-auto w-full object-contain"
@@ -197,7 +206,7 @@ export default function HeroSection() {
               >
                 <Image
                   src="/images/hero/bowl.png"
-                  alt="Matcha kasesi"
+                  alt={t.hero.bowlImageAlt}
                   width={520}
                   height={360}
                   priority
@@ -219,7 +228,7 @@ export default function HeroSection() {
               transition={{ duration: 0.55 }}
               className="inline-flex rounded-full border border-[#6B8F71]/15 bg-white/75 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--color-primary-dark)] shadow-[var(--shadow-soft)] backdrop-blur-md md:text-[11px]"
             >
-              Seremonik Matcha Koleksiyonu
+              {t.hero.badge}
             </motion.span>
 
             <motion.h1
@@ -228,7 +237,7 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.06 }}
               className="mt-3 text-[28px] font-semibold leading-[0.95] tracking-tight text-[var(--color-text)] sm:text-4xl md:mt-6 md:text-7xl xl:text-[84px]"
             >
-              Premium matcha deneyimi
+              {t.hero.title}
             </motion.h1>
 
             <motion.p
@@ -237,9 +246,7 @@ export default function HeroSection() {
               transition={{ duration: 0.7, delay: 0.14 }}
               className="mt-3 max-w-xl text-sm leading-6 text-[var(--color-text-soft)] sm:text-[15px] md:mt-6 md:text-lg"
             >
-              Seremonik matcha, bambu whisk ve zarif bowl koleksiyonuyla
-              geleneksel hazırlama deneyimini modern, estetik ve dengeli bir
-              günlük ritüele dönüştürün.
+              {t.hero.text}
             </motion.p>
 
             <motion.div
@@ -249,7 +256,7 @@ export default function HeroSection() {
               className="mt-4 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap md:mt-8 md:gap-4"
             >
               <Link href="/products" className="w-full sm:w-auto">
-                <Button className="w-full sm:w-auto">Ürünleri İncele</Button>
+                <Button className="w-full sm:w-auto">{t.hero.cta}</Button>
               </Link>
             </motion.div>
 
@@ -261,28 +268,28 @@ export default function HeroSection() {
             >
               <div className="rounded-[22px] border border-white/60 bg-white/60 p-4 shadow-[var(--shadow-soft)] backdrop-blur-lg">
                 <div className="text-lg font-semibold text-[var(--color-text)]">
-                  Seremonik
+                  {t.hero.features.oneTitle}
                 </div>
                 <div className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
-                  premium kalite
+                  {t.hero.features.oneText}
                 </div>
               </div>
 
               <div className="rounded-[22px] border border-white/60 bg-white/60 p-4 shadow-[var(--shadow-soft)] backdrop-blur-lg">
                 <div className="text-lg font-semibold text-[var(--color-text)]">
-                  Bambu Whisk
+                  {t.hero.features.twoTitle}
                 </div>
                 <div className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
-                  geleneksel hazırlık
+                  {t.hero.features.twoText}
                 </div>
               </div>
 
               <div className="rounded-[22px] border border-white/60 bg-white/60 p-4 shadow-[var(--shadow-soft)] backdrop-blur-lg">
                 <div className="text-lg font-semibold text-[var(--color-text)]">
-                  Matcha Bowl
+                  {t.hero.features.threeTitle}
                 </div>
                 <div className="mt-1 text-xs uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
-                  zarif sunum
+                  {t.hero.features.threeText}
                 </div>
               </div>
             </motion.div>
@@ -301,7 +308,7 @@ export default function HeroSection() {
       >
         <Image
           src="/images/hero/whisk.png"
-          alt="Bambu whisk"
+          alt={t.hero.whiskImageAlt}
           width={420}
           height={520}
           priority
@@ -316,19 +323,15 @@ export default function HeroSection() {
 
             <div className="max-w-lg">
               <span className="inline-flex rounded-full border border-[#6B8F71]/15 bg-white/75 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.22em] text-[var(--color-primary-dark)] shadow-[var(--shadow-soft)] backdrop-blur-md md:text-[11px]">
-                Bambu Whisk
+                {t.hero.whiskBadge}
               </span>
 
-              <h2 className="mt-5 text-2xl font-semibold leading-tight text-[var(--color-text)] sm:text-3xl md:mt-6 md:text-5xl">
-                Bambu whisk ile
-                <br />
-                gerçek matcha ritüeli
+              <h2 className="mt-5 text-2xl font-semibold leading-tight text-[var(--color-text)] sm:text-3xl md:mt-6 md:text-5xl whitespace-pre-line">
+                {t.hero.whiskTitle}
               </h2>
 
               <p className="mt-4 text-sm leading-7 text-[var(--color-text-soft)] sm:text-base md:mt-6">
-                Bambu whisk, seremonik matcha hazırlamanın en önemli
-                parçalarından biridir. Yumuşak köpük, dengeli karışım ve estetik
-                sunum için tasarlanan bu özel araç, ritüelinizi tamamlar.
+                {t.hero.whiskText}
               </p>
             </div>
           </div>
@@ -342,7 +345,7 @@ export default function HeroSection() {
 
             <Image
               src="/images/hero/matcha-collection.png"
-              alt="Matcha, bowl ve bambu whisk koleksiyonu"
+              alt={t.hero.collectionImageAlt}
               width={1600}
               height={900}
               priority
@@ -355,61 +358,54 @@ export default function HeroSection() {
       <div className="relative z-20 mt-[80px] pb-[10px] md:mt-[140px] md:pb-[220px]">
         <Container>
           <div className="grid gap-6 md:grid-cols-3">
-            {/* Matcha */}
             <div className="flex h-full flex-col rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
-
               <div className="flex h-[180px] items-center justify-center">
                 <Image
                   src="/images/products/matcha-pack.png"
-                  alt="Seremonik matcha ürünü"
+                  alt={t.hero.cards.matchaTitle}
                   width={260}
                   height={260}
                   className="h-[180px] w-auto object-contain"
                 />
               </div>
 
-              {/* SADE BAŞLIK */}
               <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                Seremonik Matcha
+                {t.hero.cards.matchaTitle}
               </div>
 
               <div className="mt-3 flex flex-1 flex-col">
-
-                {/* 🔥 FİYAT + GRAMAJ AYNI SATIR */}
                 <div className="flex items-center justify-between gap-3">
-
                   <div className="text-3xl font-semibold text-[var(--color-text)]">
                     {heroMatchaPriceLabel}
                   </div>
 
                   <div className="flex items-center gap-1 rounded-full border border-[#6B8F71]/15 bg-white/70 p-1 backdrop-blur-md">
-
                     <button
                       onClick={() => setHeroMatchaSize("50g")}
-                      className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition ${heroMatchaSize === "50g"
-                        ? "bg-[var(--color-primary)] text-white shadow"
-                        : "text-[var(--color-text-soft)]"
-                        }`}
+                      className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition ${
+                        heroMatchaSize === "50g"
+                          ? "bg-[var(--color-primary)] text-white shadow"
+                          : "text-[var(--color-text-soft)]"
+                      }`}
                     >
-                      50g
+                      {t.products.weight50}
                     </button>
 
                     <button
                       onClick={() => setHeroMatchaSize("100g")}
-                      className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition ${heroMatchaSize === "100g"
-                        ? "bg-[var(--color-primary)] text-white shadow"
-                        : "text-[var(--color-text-soft)]"
-                        }`}
+                      className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition ${
+                        heroMatchaSize === "100g"
+                          ? "bg-[var(--color-primary)] text-white shadow"
+                          : "text-[var(--color-text-soft)]"
+                      }`}
                     >
-                      100g
+                      {t.products.weight100}
                     </button>
-
                   </div>
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                  Yoğun aroma, dengeli tat ve premium kalite sunan seremonik
-                  matcha seçkisi.
+                  {t.hero.cards.matchaText}
                 </p>
 
                 <div className="mt-auto pt-5">
@@ -418,28 +414,28 @@ export default function HeroSection() {
                     onClick={() =>
                       handleAddToCart(
                         `matcha-${heroMatchaSize}`,
-                        "Seremonik Matcha",
+                        t.products.ceremonialMatcha,
                         heroMatchaPrice,
                         "/images/products/matcha-pack.png",
-                        heroMatchaSize === "50g" ? "50 gr" : "100 gr"
+                        heroMatchaSize === "50g"
+                          ? t.products.weight50
+                          : t.products.weight100
                       )
                     }
                   >
-                    Sepete Ekle
+                    {t.products.addToCart}
                   </Button>
                 </div>
-
               </div>
             </div>
 
-            {/* Whisk */}
             <div className="flex h-full flex-col rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
               <div className="relative flex h-[180px] items-center justify-center">
                 <div className="absolute inset-x-1/2 top-1/2 -z-10 h-[120px] w-[180px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dce8d8]/60 blur-3xl" />
               </div>
 
               <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                Bambu Whisk
+                {t.hero.cards.whiskTitle}
               </div>
 
               <div className="mt-3 flex flex-1 flex-col">
@@ -448,8 +444,7 @@ export default function HeroSection() {
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                  Daha yumuşak köpük, dengeli karışım ve geleneksel hazırlık hissi
-                  için özel bambu whisk.
+                  {t.hero.cards.whiskText}
                 </p>
 
                 <div className="mt-auto pt-5">
@@ -458,24 +453,23 @@ export default function HeroSection() {
                     onClick={() =>
                       handleAddToCart(
                         "bamboo-whisk",
-                        "Bambu Whisk",
+                        t.products.bambooWhisk,
                         349,
                         "/images/hero/whisk.png"
                       )
                     }
                   >
-                    Sepete Ekle
+                    {t.products.addToCart}
                   </Button>
                 </div>
               </div>
             </div>
 
-            {/* Bowl */}
             <div className="flex h-full flex-col rounded-[28px] border border-white/60 bg-white/65 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
               <div className="flex h-[180px] items-center justify-center">
                 <Image
                   src="/images/products/bowl-product.png"
-                  alt="Matcha bowl ürünü"
+                  alt={t.hero.cards.bowlTitle}
                   width={260}
                   height={260}
                   className="h-[180px] w-auto object-contain"
@@ -483,7 +477,7 @@ export default function HeroSection() {
               </div>
 
               <div className="mt-5 text-sm font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
-                Matcha Bowl
+                {t.hero.cards.bowlTitle}
               </div>
 
               <div className="mt-3 flex flex-1 flex-col">
@@ -492,8 +486,7 @@ export default function HeroSection() {
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                  Zarif sunum ve rahat hazırlama için özel tasarlanmış premium
-                  bowl koleksiyonu.
+                  {t.hero.cards.bowlText}
                 </p>
 
                 <div className="mt-auto pt-5">
@@ -502,13 +495,13 @@ export default function HeroSection() {
                     onClick={() =>
                       handleAddToCart(
                         "matcha-bowl",
-                        "Matcha Bowl",
+                        t.products.matchaBowl,
                         649,
                         "/images/products/bowl-product.png"
                       )
                     }
                   >
-                    Sepete Ekle
+                    {t.products.addToCart}
                   </Button>
                 </div>
               </div>

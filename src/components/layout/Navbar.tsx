@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import Container from "@/components/ui/Container";
-import { useState } from "react";
+import { useLang } from "@/context/LangContext";
+import { dict } from "@/i18n/dict";
 import { ShoppingBag, House, Package } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
-  const [lang, setLang] = useState<"TR" | "EN">("TR");
+ const { lang, setLang } = useLang();
+const t = dict[lang];
   const { totalItems } = useCart();
   const pathname = usePathname();
 
@@ -48,16 +50,16 @@ export default function Navbar() {
             {/* Desktop nav */}
             <nav className="hidden items-center gap-2 md:flex">
               <Link href="/" className={navItemClass("/")}>
-                Home
-              </Link>
+  {t.nav.home}
+</Link>
 
-              <Link href="/products" className={navItemClass("/products")}>
-                Products
-              </Link>
+<Link href="/products" className={navItemClass("/products")}>
+  {t.nav.products}
+</Link>
 
-              <Link href="/cart" className={navItemClass("/cart")}>
-                Cart
-              </Link>
+<Link href="/cart" className={navItemClass("/cart")}>
+  {t.nav.cart}
+</Link>
             </nav>
 
             {/* Desktop right */}
