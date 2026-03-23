@@ -8,6 +8,8 @@ import { useCart } from "@/context/CartContext";
 import { useLang } from "@/context/LangContext";
 import { dict } from "@/i18n/dict";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 export default function CartPage() {
     const {
         items,
@@ -21,6 +23,7 @@ export default function CartPage() {
 
     const { lang } = useLang();
     const t = dict[lang];
+    const router = useRouter();
 
     const shipping = totalPrice >= 500 ? 0 : 80;
     const finalTotal = totalPrice + shipping;
@@ -154,7 +157,17 @@ export default function CartPage() {
                                     </div>
 
                                     <div className="mt-6 space-y-3">
-                                        <Button className="w-full">{t.cart.checkout}</Button>
+
+                                        <Button
+                                            className="w-full"
+                                            onClick={() => {
+                                                if (items.length === 0) return;
+                                                router.push("/checkout");
+                                            }}
+                                        >
+                                            {t.cart.checkout}
+                                        </Button>
+
                                         <Button
                                             variant="secondary"
                                             className="w-full"
