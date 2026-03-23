@@ -409,7 +409,7 @@ export default function HeroSection() {
                     className="w-full"
                     onClick={() =>
                       handleAddToCart(
-                        `hero-matcha-${heroMatchaSize}`,
+                        `matcha-${heroMatchaSize}`,
                         "Seremonik Matcha",
                         heroMatchaPrice,
                         "/images/products/matcha-pack.png",
@@ -449,7 +449,7 @@ export default function HeroSection() {
                     className="w-full"
                     onClick={() =>
                       handleAddToCart(
-                        "hero-whisk",
+                        "bamboo-whisk",
                         "Bambu Whisk",
                         349,
                         "/images/hero/whisk.png"
@@ -493,7 +493,7 @@ export default function HeroSection() {
                     className="w-full"
                     onClick={() =>
                       handleAddToCart(
-                        "hero-bowl",
+                        "matcha-bowl",
                         "Matcha Bowl",
                         649,
                         "/images/products/bowl-product.png"

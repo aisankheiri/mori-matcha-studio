@@ -124,27 +124,35 @@ export default function Navbar() {
                 )}
               </Link>
 
-              <div className="flex items-center rounded-full border border-[#6B8F71]/10 bg-white/60 p-[1px] backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
-                <button
-                  onClick={() => setLang("TR")}
-                  className={`rounded-full px-[4px] py-[0.5px] text-[6px] font-medium tracking-wide transition-all duration-300 ${lang === "TR"
-                      ? "bg-[var(--color-primary)] text-white"
-                      : "text-[var(--color-text-soft)] opacity-50"
-                    }`}
-                >
-                  TR
-                </button>
+              <div className="relative flex items-center rounded-full border border-[#6B8F71]/10 bg-white/70 p-[2px] shadow-[0_4px_12px_rgba(0,0,0,0.04)] backdrop-blur-xl">
+  <div
+    className={`absolute top-[2px] bottom-[2px] w-[28px] rounded-full bg-[var(--color-primary)] shadow-[0_4px_10px_rgba(107,143,113,0.22)] transition-all duration-300 ${
+      lang === "TR" ? "left-[2px]" : "left-[30px]"
+    }`}
+  />
 
-                <button
-                  onClick={() => setLang("EN")}
-                  className={`rounded-full px-[4px] py-[0.5px] text-[6px] font-medium tracking-wide transition-all duration-300 ${lang === "EN"
-                      ? "bg-[var(--color-primary)] text-white"
-                      : "text-[var(--color-text-soft)] opacity-50"
-                    }`}
-                >
-                  EN
-                </button>
-              </div>
+  <button
+    onClick={() => setLang("TR")}
+    className={`relative z-10 flex h-6 w-7 items-center justify-center rounded-full text-[7px] font-semibold tracking-[0.08em] transition-all duration-300 ${
+      lang === "TR"
+        ? "text-white"
+        : "text-[var(--color-text-soft)]"
+    }`}
+  >
+    TR
+  </button>
+
+  <button
+    onClick={() => setLang("EN")}
+    className={`relative z-10 flex h-6 w-7 items-center justify-center rounded-full text-[7px] font-semibold tracking-[0.08em] transition-all duration-300 ${
+      lang === "EN"
+        ? "text-white"
+        : "text-[var(--color-text-soft)]"
+    }`}
+  >
+    EN
+  </button>
+</div>
             </div>
           </div>
         </div>
