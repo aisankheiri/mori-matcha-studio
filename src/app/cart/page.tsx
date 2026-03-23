@@ -5,6 +5,8 @@ import Navbar from "@/components/layout/Navbar";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
+import { useLang } from "@/context/LangContext";
+import { dict } from "@/i18n/dict";
 
 export default function CartPage() {
   const {
@@ -16,6 +18,9 @@ export default function CartPage() {
     removeFromCart,
     clearCart,
   } = useCart();
+
+  const { lang } = useLang();
+  const t = dict[lang];
 
   const shipping = totalPrice >= 500 ? 0 : 80;
   const finalTotal = totalPrice + shipping;
@@ -30,12 +35,11 @@ export default function CartPage() {
             {items.length === 0 ? (
               <div className="rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
                 <div className="text-lg font-semibold text-[var(--color-text)]">
-                  Sepetiniz şu an boş
+                  {t.cart.emptyTitle}
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
-                  Ürünler sayfasından matcha, bowl, bambu whisk veya matcha
-                  kaşığı ekleyebilirsiniz.
+                  {t.cart.emptyText}
                 </p>
               </div>
             ) : (
@@ -104,7 +108,7 @@ export default function CartPage() {
                         onClick={() => removeFromCart(item.id)}
                         className="shrink-0 text-[11px] text-[var(--color-text-soft)] transition hover:text-[var(--color-text)] sm:text-xs"
                       >
-                        Sil
+                        {t.cart.remove}
                       </button>
                     </div>
                   ))}
@@ -112,35 +116,37 @@ export default function CartPage() {
 
                 <aside className="h-fit rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl">
                   <div className="text-lg font-semibold text-[var(--color-text)]">
-                    Sipariş Özeti
+                    {t.cart.orderSummary}
                   </div>
 
                   <div className="mt-6 space-y-3 text-sm text-[var(--color-text-soft)]">
                     <div className="flex items-center justify-between">
-                      <span>Toplam Ürün</span>
+                      <span>{t.cart.totalItems}</span>
                       <span>{totalItems}</span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span>Ara Toplam</span>
+                      <span>{t.cart.subtotal}</span>
                       <span>₺{totalPrice.toLocaleString("tr-TR")}</span>
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span>Kargo</span>
+                      <span>{t.cart.shipping}</span>
                       <span
                         className={
                           shipping === 0 ? "font-medium text-green-600" : ""
                         }
                       >
-                        {shipping === 0 ? "Ücretsiz" : "₺80"}
+                        {shipping === 0
+                          ? t.cart.freeShipping
+                          : "₺80"}
                       </span>
                     </div>
 
                     <div className="my-2 h-px bg-[#6B8F71]/20" />
 
                     <div className="flex items-center justify-between text-base font-semibold text-[var(--color-text)]">
-                      <span>Toplam</span>
+                      <span>{t.cart.total}</span>
                       <span className="text-[var(--color-primary-dark)]">
                         ₺{finalTotal.toLocaleString("tr-TR")}
                       </span>
@@ -148,13 +154,13 @@ export default function CartPage() {
                   </div>
 
                   <div className="mt-6 space-y-3">
-                    <Button className="w-full">Ödemeye Geç</Button>
+                    <Button className="w-full">{t.cart.checkout}</Button>
                     <Button
                       variant="secondary"
                       className="w-full"
                       onClick={clearCart}
                     >
-                      Sepeti Temizle
+                      {t.cart.clearCart}
                     </Button>
                   </div>
                 </aside>
