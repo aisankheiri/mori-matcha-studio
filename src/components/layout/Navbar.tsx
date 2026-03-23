@@ -99,6 +99,7 @@ export default function Navbar() {
               </Link>
             </div>
 
+
             {/* Mobile nav inside navbar */}
             <div className="flex items-center gap-1.5 md:hidden">
               <Link href="/" className={mobileIconClass("/")}>
@@ -114,8 +115,8 @@ export default function Navbar() {
                 {totalItems > 0 && (
                   <span
                     className={`absolute -right-1 -top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full px-1 text-[9px] font-semibold ${pathname === "/cart"
-                      ? "bg-white text-[var(--color-primary-dark)]"
-                      : "bg-[var(--color-primary)] text-white"
+                        ? "bg-white text-[var(--color-primary-dark)]"
+                        : "bg-[var(--color-primary)] text-white"
                       }`}
                   >
                     {totalItems}
@@ -124,10 +125,9 @@ export default function Navbar() {
               </Link>
 
               <div className="flex items-center rounded-full border border-[#6B8F71]/10 bg-white/60 p-[1px] backdrop-blur-xl shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
-
                 <button
                   onClick={() => setLang("TR")}
-                  className={`rounded-full px-[5px] py-[1px] text-[7px] font-medium tracking-wide transition-all duration-300 ${lang === "TR"
+                  className={`rounded-full px-[4px] py-[0.5px] text-[6px] font-medium tracking-wide transition-all duration-300 ${lang === "TR"
                       ? "bg-[var(--color-primary)] text-white"
                       : "text-[var(--color-text-soft)] opacity-50"
                     }`}
@@ -137,14 +137,13 @@ export default function Navbar() {
 
                 <button
                   onClick={() => setLang("EN")}
-                  className={`rounded-full px-[5px] py-[1px] text-[7px] font-medium tracking-wide transition-all duration-300 ${lang === "EN"
+                  className={`rounded-full px-[4px] py-[0.5px] text-[6px] font-medium tracking-wide transition-all duration-300 ${lang === "EN"
                       ? "bg-[var(--color-primary)] text-white"
                       : "text-[var(--color-text-soft)] opacity-50"
                     }`}
                 >
                   EN
                 </button>
-
               </div>
             </div>
           </div>
