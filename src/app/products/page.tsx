@@ -62,7 +62,7 @@ export default function ProductsPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[var(--color-bg)] pt-12 pb-16 md:pt-16 md:pb-24">
+      <main className="min-h-screen bg-[var(--color-bg)] pt-20 pb-16 md:pt-24 md:pb-24">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,#f7f6f2_0%,#f2efe9_100%)]" />
           <div className="absolute left-[12%] top-[10%] -z-10 h-[220px] w-[220px] rounded-full bg-[#dce8d8]/25 blur-3xl md:h-[280px] md:w-[280px]" />
