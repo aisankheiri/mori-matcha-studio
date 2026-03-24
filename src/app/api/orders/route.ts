@@ -103,7 +103,7 @@ function customerEmailHtml({
       <div style="max-width:680px;margin:0 auto;padding:32px 20px;">
         <div style="background:#ffffff;border:1px solid #e7e7e2;border-radius:24px;padding:32px;">
           <div style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:#6b8f71;font-weight:700;">
-            Mori Matcha
+            Matchaora
           </div>
 
           <h1 style="margin:18px 0 10px;font-size:28px;line-height:1.2;color:#1f2f2a;">
@@ -264,8 +264,8 @@ export async function POST(request: Request) {
     if (!process.env.RESEND_API_KEY) {
       console.warn("RESEND_API_KEY is missing. Emails were not sent.");
     } else {
-      await resend.emails.send({
-        from: "Mori Matcha <orders@matchaora.com>",
+      const customerResult = await resend.emails.send({
+        from: "Matchaora <orders@matchaora.com>",
         to: customer.email,
         subject: `Siparişiniz alındı - ${orderNumber}`,
         html: customerEmailHtml({
@@ -278,9 +278,11 @@ export async function POST(request: Request) {
         }),
       });
 
+      console.log("CUSTOMER_EMAIL_RESULT", customerResult);
+
       if (process.env.ADMIN_ORDER_EMAIL) {
-        await resend.emails.send({
-          from: "Mori Matcha <orders@matchaora.com>",
+        const adminResult = await resend.emails.send({
+          from: "Matchaora <orders@matchaora.com>",
           to: process.env.ADMIN_ORDER_EMAIL,
           subject: `Yeni Sipariş - ${orderNumber}`,
           html: adminEmailHtml({
@@ -293,6 +295,8 @@ export async function POST(request: Request) {
             total,
           }),
         });
+
+        console.log("ADMIN_EMAIL_RESULT", adminResult);
       }
     }
 
