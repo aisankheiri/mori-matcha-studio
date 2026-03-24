@@ -15,7 +15,7 @@ export default function FooterDark() {
           
           {/* BRAND */}
           <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#A9C3B0] md:text-sm">
-            Mori Matcha
+            Matchaora
           </div>
 
           {/* LOCATION */}
@@ -28,7 +28,7 @@ export default function FooterDark() {
 
         {/* bottom tiny */}
         <div className="border-t border-[#6B8F71]/20 py-3 text-center text-[10px] text-[#7F938A]">
-          © 2026 Mori Matcha
+          © 2026 Matchaora
         </div>
       </Container>
     </footer>

@@ -5,7 +5,7 @@ import { ToastProvider } from "@/context/ToastContext";
 import { LangProvider } from "@/context/LangContext";
 
 export const metadata: Metadata = {
-  title: "Mori Matcha",
+  title: "Matchaora",
   description: "Premium matcha experience",
 };
 

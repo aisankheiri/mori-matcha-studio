@@ -44,7 +44,7 @@ const t = dict[lang];
               href="/"
               className="shrink-0 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-primary-dark)] transition hover:opacity-80 md:text-sm"
             >
-              Mori Matcha
+              Matchaora
             </Link>
 
             {/* Desktop nav */}
