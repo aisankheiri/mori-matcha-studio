@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Container from "@/components/ui/Container";
 import { useLang } from "@/context/LangContext";
+import { useRouter } from "next/navigation";
 
 type AdminOrderItem = {
   id: string;
@@ -54,6 +55,7 @@ export default function AdminPage() {
   );
   const [statusInputs, setStatusInputs] = useState<Record<string, string>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
+  const router = useRouter();
 
   const t = useMemo(
     () => ({
@@ -240,13 +242,13 @@ export default function AdminPage() {
         prev.map((order) =>
           order.id === orderId
             ? {
-                ...order,
-                status: selectedStatus,
-                trackingNumber:
-                  selectedStatus === "shipped"
-                    ? trackingNumber
-                    : data.order?.trackingNumber ?? order.trackingNumber,
-              }
+              ...order,
+              status: selectedStatus,
+              trackingNumber:
+                selectedStatus === "shipped"
+                  ? trackingNumber
+                  : data.order?.trackingNumber ?? order.trackingNumber,
+            }
             : order
         )
       );
@@ -262,6 +264,19 @@ export default function AdminPage() {
 
   const filteredOrders =
     filter === "all" ? orders : orders.filter((order) => order.status === filter);
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", {
+        method: "POST",
+      });
+
+      router.push("/admin-login");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert(lang === "TR" ? "Çıkış yapılamadı." : "Logout failed.");
+    }
+  };
 
   return (
     <>
@@ -271,13 +286,24 @@ export default function AdminPage() {
         <Container>
           <div className="mx-auto w-full max-w-[var(--container-width)]">
             <div className="rounded-[32px] border border-white/60 bg-white/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl md:p-8">
-              <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text)]">
-                {t.title}
-              </h1>
+         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+  <div>
+    <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text)]">
+      {t.title}
+    </h1>
 
-              <p className="mt-3 text-sm leading-7 text-[var(--color-text-soft)] md:text-base">
-                {t.subtitle}
-              </p>
+    <p className="mt-3 text-sm leading-7 text-[var(--color-text-soft)] md:text-base">
+      {t.subtitle}
+    </p>
+  </div>
+
+  <button
+    onClick={handleLogout}
+    className="rounded-full border border-[#6B8F71]/20 bg-white/80 px-4 py-2 text-sm font-medium text-[var(--color-text)] transition hover:bg-white"
+  >
+    {lang === "TR" ? "Çıkış Yap" : "Logout"}
+  </button>
+</div>
 
               <div className="mt-8 grid gap-4 md:grid-cols-3">
                 <div className="rounded-[24px] border border-white/60 bg-white/75 p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
@@ -321,11 +347,10 @@ export default function AdminPage() {
                       <button
                         key={value}
                         onClick={() => setFilter(value)}
-                        className={`rounded-full px-4 py-2 text-xs font-medium transition ${
-                          filter === value
+                        className={`rounded-full px-4 py-2 text-xs font-medium transition ${filter === value
                             ? "bg-[var(--color-primary)] text-white"
                             : "border border-white/60 bg-white/75 text-[var(--color-text-soft)]"
-                        }`}
+                          }`}
                       >
                         {value === "all" ? t.all : statusLabel(value)}
                       </button>
