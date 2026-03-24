@@ -265,7 +265,7 @@ export async function POST(request: Request) {
       console.warn("RESEND_API_KEY is missing. Emails were not sent.");
     } else {
       await resend.emails.send({
-        from: "Mori Matcha <onboarding@resend.dev>",
+        from: "Mori Matcha <orders@matchaora.com>",
         to: customer.email,
         subject: `Siparişiniz alındı - ${orderNumber}`,
         html: customerEmailHtml({
@@ -280,7 +280,7 @@ export async function POST(request: Request) {
 
       if (process.env.ADMIN_ORDER_EMAIL) {
         await resend.emails.send({
-          from: "Mori Matcha <onboarding@resend.dev>",
+          from: "Mori Matcha <orders@matchaora.com>",
           to: process.env.ADMIN_ORDER_EMAIL,
           subject: `Yeni Sipariş - ${orderNumber}`,
           html: adminEmailHtml({
