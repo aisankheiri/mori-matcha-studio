@@ -92,16 +92,16 @@ export async function PATCH(request: Request, context: RouteContext) {
       );
     }
 
-    const updatedOrder = await prisma.order.update({
-      where: { id },
-      data: {
-        status: body.status,
-        trackingNumber:
-          body.status === "shipped"
-            ? body.trackingNumber?.trim() || null
-            : existingOrder.trackingNumber,
-      },
-    });
+ const updatedOrder = await prisma.order.update({
+  where: { id },
+  data: {
+    status: body.status,
+    trackingNumber:
+      body.status === "shipped"
+        ? body.trackingNumber?.trim() || null
+        : existingOrder.trackingNumber ?? null,
+  },
+});
 
     if (
       body.status === "shipped" &&
