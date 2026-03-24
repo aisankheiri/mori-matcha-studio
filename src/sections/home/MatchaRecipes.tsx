@@ -4,13 +4,14 @@ import Image from "next/image";
 import Container from "@/components/ui/Container";
 import { useLang } from "@/context/LangContext";
 import { dict } from "@/i18n/dict";
+import BrandLogo from "./BrandLogo";
 
 export default function MatchaRecipes() {
   const { lang } = useLang();
   const t = dict[lang];
 
   return (
-    <section className="relative mt-[100px] overflow-hidden pb-[140px] md:mt-[140px] md:pb-[200px]">
+    <section className="relative mt-[100px] overflow-hidden md:mt-[140px]">
       <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,rgba(247,246,242,0)_0%,rgba(242,239,233,0.65)_100%)]" />
       <div className="absolute left-1/2 top-[14%] -z-10 h-[240px] w-[240px] -translate-x-1/2 rounded-full bg-[#dce8d8]/40 blur-3xl md:h-[360px] md:w-[360px]" />
 
@@ -175,6 +176,10 @@ export default function MatchaRecipes() {
               </div>
             </article>
           </div>
+        </div>
+
+        <div className="mt-0">
+          <BrandLogo />
         </div>
       </Container>
     </section>
