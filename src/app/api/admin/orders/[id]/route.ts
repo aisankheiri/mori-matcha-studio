@@ -4,7 +4,6 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// ✅ email template
 function shippedEmailHtml({
   firstName,
   orderNumber,
@@ -20,50 +19,45 @@ function shippedEmailHtml({
         <h2>Siparişiniz Kargoya Verildi</h2>
         <p>Merhaba ${firstName},</p>
         <p><strong>${orderNumber}</strong> numaralı siparişiniz kargoya verildi.</p>
-
         ${
           trackingNumber
             ? `<p><strong>Kargo Takip No:</strong> ${trackingNumber}</p>`
             : ""
         }
-
         <p>İyi günlerde kullanın 🌿</p>
       </div>
     </div>
   `;
 }
 
-export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
+
+export async function PATCH(request: Request, context: RouteContext) {
   try {
-    const id = params.id;
-
-    const body = await request.json();
-
-    const status = body.status;
-    const trackingNumber = body.trackingNumber;
+    const { id } = await context.params;
+    const body = (await request.json()) as {
+      status?: string;
+      trackingNumber?: string;
+    };
 
     const allowedStatuses = ["pending", "preparing", "shipped", "completed"];
 
-    // ❌ status kontrol
-    if (!status || !allowedStatuses.includes(status)) {
+    if (!body.status || !allowedStatuses.includes(body.status)) {
       return NextResponse.json(
         { success: false, message: "Invalid status" },
         { status: 400 }
       );
     }
 
-    // ❌ shipped ise tracking zorunlu
-    if (status === "shipped" && !trackingNumber?.trim()) {
+    if (body.status === "shipped" && !body.trackingNumber?.trim()) {
       return NextResponse.json(
         { success: false, message: "Tracking number required" },
         { status: 400 }
       );
     }
 
-    // ✅ order çek
     const existingOrder = await prisma.order.findUnique({
       where: { id },
     });
@@ -75,21 +69,19 @@ export async function PATCH(
       );
     }
 
-    // ✅ update
     const updatedOrder = await prisma.order.update({
       where: { id },
       data: {
-        status,
+        status: body.status,
         trackingNumber:
-          status === "shipped"
-            ? trackingNumber?.trim()
-            : existingOrder.trackingNumber,
+          body.status === "shipped"
+            ? body.trackingNumber?.trim() || null
+            : existingOrder.trackingNumber ?? null,
       },
     });
 
-    // ✅ sadece ilk kez shipped olunca mail gönder
     if (
-      status === "shipped" &&
+      body.status === "shipped" &&
       existingOrder.status !== "shipped" &&
       process.env.RESEND_API_KEY
     ) {
@@ -104,7 +96,7 @@ export async function PATCH(
         }),
       });
 
-      console.log("SHIPPED EMAIL:", result);
+      console.log("SHIPPED_EMAIL_RESULT", result);
     }
 
     return NextResponse.json({
