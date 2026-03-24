@@ -32,7 +32,7 @@ export default function CartPage() {
         <>
             <Navbar />
 
-            <main className="min-h-screen bg-[var(--color-bg)] pt-20 pb-20 md:pt-24">
+            <main className="min-h-screen bg-[var(--color-bg)] pt-26 pb-20 md:pt-32">
                 <Container>
                     <div className="mx-auto w-full max-w-[var(--container-width)]">
                         {items.length === 0 ? (

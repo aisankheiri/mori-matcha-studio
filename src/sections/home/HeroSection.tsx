@@ -74,11 +74,11 @@ export default function HeroSection() {
     scrollYProgress,
     [0, 0.25, 0.4, 0.6, 0.7, 0.92, 1],
     screenType === "desktop"
-      ? [-100, 390, 900, 1100, 1600, 1570, 2100]
+      ? [-70, 390, 1000, 900, 1600, 1870, 2170]
       : screenType === "ipadair"
       ? [-120, 440, 920, 1920, 2330, 2280, 2220]
       : screenType === "iphone12"
-      ? [-225, 500, 1130, 1350, 1600, 1750, 1650]
+      ? [-205, 500, 1130, 1350, 1600, 1750, 1650]
       : [-225, 500, 1130, 1350, 1600, 1750, 1650]
   );
 
@@ -161,7 +161,7 @@ export default function HeroSection() {
       />
 
       <Container>
-        <div className="grid min-h-[calc(100vh-72px)] items-start gap-5 pb-6 pt-0 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-4">
+       <div className="grid min-h-[calc(100vh-72px)] items-start gap-5 pb-6 pt-10 md:grid-cols-[1fr_1fr] md:items-center md:gap-8 md:pb-8 md:pt-25">
           <div className="order-1 relative flex min-h-[300px] items-center justify-center sm:min-h-[420px] md:order-2 md:min-h-[860px]">
             <motion.div
               animate={{ scale: [1, 1.04, 1] }}

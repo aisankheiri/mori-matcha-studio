@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import { useLang } from "@/context/LangContext";
 import { dict } from "@/i18n/dict";
@@ -9,8 +10,8 @@ import { usePathname } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
- const { lang, setLang } = useLang();
-const t = dict[lang];
+  const { lang, setLang } = useLang();
+  const t = dict[lang];
   const { totalItems } = useCart();
   const pathname = usePathname();
 
@@ -42,24 +43,31 @@ const t = dict[lang];
           <div className="flex items-center justify-between gap-3">
             <Link
               href="/"
-              className="shrink-0 text-xs font-semibold uppercase tracking-[0.22em] text-[var(--color-primary-dark)] transition hover:opacity-80 md:text-sm"
+              className="flex shrink-0 items-center transition hover:opacity-80"
+              aria-label="Matchaora Home"
             >
-              Matchaora
+              <Image
+                src="/favicon2.png"
+                alt="Matchaora logo"
+                width={344}
+                height={144}
+                className="h-13 w-27 object-contain md:h-17 md:w-38"
+              />
             </Link>
 
             {/* Desktop nav */}
             <nav className="hidden items-center gap-2 md:flex">
               <Link href="/" className={navItemClass("/")}>
-  {t.nav.home}
-</Link>
+                {t.nav.home}
+              </Link>
 
-<Link href="/products" className={navItemClass("/products")}>
-  {t.nav.products}
-</Link>
+              <Link href="/products" className={navItemClass("/products")}>
+                {t.nav.products}
+              </Link>
 
-<Link href="/cart" className={navItemClass("/cart")}>
-  {t.nav.cart}
-</Link>
+              <Link href="/cart" className={navItemClass("/cart")}>
+                {t.nav.cart}
+              </Link>
             </nav>
 
             {/* Desktop right */}
@@ -67,20 +75,22 @@ const t = dict[lang];
               <div className="flex items-center rounded-full border border-[#6B8F71]/20 bg-white/80 p-1 backdrop-blur-md shadow-[0_6px_18px_rgba(0,0,0,0.04)]">
                 <button
                   onClick={() => setLang("TR")}
-                  className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 ${lang === "TR"
-                    ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
-                    : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
-                    }`}
+                  className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 ${
+                    lang === "TR"
+                      ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
+                      : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
+                  }`}
                 >
                   TR
                 </button>
 
                 <button
                   onClick={() => setLang("EN")}
-                  className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 ${lang === "EN"
-                    ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
-                    : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
-                    }`}
+                  className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-300 ${
+                    lang === "EN"
+                      ? "bg-[var(--color-primary)] text-white shadow-[0_6px_16px_rgba(107,143,113,0.28)]"
+                      : "text-[var(--color-text-soft)] hover:text-[var(--color-text)]"
+                  }`}
                 >
                   EN
                 </button>
@@ -90,17 +100,17 @@ const t = dict[lang];
                 <ShoppingBag size={18} />
                 {totalItems > 0 && (
                   <span
-                    className={`absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold ${pathname === "/cart"
-                      ? "bg-white text-[var(--color-primary-dark)]"
-                      : "bg-[var(--color-primary)] text-white"
-                      }`}
+                    className={`absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-semibold ${
+                      pathname === "/cart"
+                        ? "bg-white text-[var(--color-primary-dark)]"
+                        : "bg-[var(--color-primary)] text-white"
+                    }`}
                   >
                     {totalItems}
                   </span>
                 )}
               </Link>
             </div>
-
 
             {/* Mobile nav inside navbar */}
             <div className="flex items-center gap-1.5 md:hidden">
@@ -116,10 +126,11 @@ const t = dict[lang];
                 <ShoppingBag size={17} />
                 {totalItems > 0 && (
                   <span
-                    className={`absolute -right-1 -top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full px-1 text-[9px] font-semibold ${pathname === "/cart"
+                    className={`absolute -right-1 -top-1 flex h-3.5 min-w-3.5 items-center justify-center rounded-full px-1 text-[9px] font-semibold ${
+                      pathname === "/cart"
                         ? "bg-white text-[var(--color-primary-dark)]"
                         : "bg-[var(--color-primary)] text-white"
-                      }`}
+                    }`}
                   >
                     {totalItems}
                   </span>
@@ -127,34 +138,34 @@ const t = dict[lang];
               </Link>
 
               <div className="relative flex items-center rounded-full border border-[#6B8F71]/10 bg-white/70 p-[2px] shadow-[0_4px_12px_rgba(0,0,0,0.04)] backdrop-blur-xl">
-  <div
-    className={`absolute top-[2px] bottom-[2px] w-[28px] rounded-full bg-[var(--color-primary)] shadow-[0_4px_10px_rgba(107,143,113,0.22)] transition-all duration-300 ${
-      lang === "TR" ? "left-[2px]" : "left-[30px]"
-    }`}
-  />
+                <div
+                  className={`absolute top-[2px] bottom-[2px] w-[28px] rounded-full bg-[var(--color-primary)] shadow-[0_4px_10px_rgba(107,143,113,0.22)] transition-all duration-300 ${
+                    lang === "TR" ? "left-[2px]" : "left-[30px]"
+                  }`}
+                />
 
-  <button
-    onClick={() => setLang("TR")}
-    className={`relative z-10 flex h-6 w-7 items-center justify-center rounded-full text-[7px] font-semibold tracking-[0.08em] transition-all duration-300 ${
-      lang === "TR"
-        ? "text-white"
-        : "text-[var(--color-text-soft)]"
-    }`}
-  >
-    TR
-  </button>
+                <button
+                  onClick={() => setLang("TR")}
+                  className={`relative z-10 flex h-6 w-7 items-center justify-center rounded-full text-[7px] font-semibold tracking-[0.08em] transition-all duration-300 ${
+                    lang === "TR"
+                      ? "text-white"
+                      : "text-[var(--color-text-soft)]"
+                  }`}
+                >
+                  TR
+                </button>
 
-  <button
-    onClick={() => setLang("EN")}
-    className={`relative z-10 flex h-6 w-7 items-center justify-center rounded-full text-[7px] font-semibold tracking-[0.08em] transition-all duration-300 ${
-      lang === "EN"
-        ? "text-white"
-        : "text-[var(--color-text-soft)]"
-    }`}
-  >
-    EN
-  </button>
-</div>
+                <button
+                  onClick={() => setLang("EN")}
+                  className={`relative z-10 flex h-6 w-7 items-center justify-center rounded-full text-[7px] font-semibold tracking-[0.08em] transition-all duration-300 ${
+                    lang === "EN"
+                      ? "text-white"
+                      : "text-[var(--color-text-soft)]"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
             </div>
           </div>
         </div>
