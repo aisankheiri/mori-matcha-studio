@@ -48,7 +48,7 @@ export default function OrderSuccessPage() {
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-[var(--color-bg)] pt-20 pb-20 md:pt-24">
+      <main className="min-h-screen bg-[var(--color-bg)] pt-28 pb-20 md:pt-32">
         <Container>
           <div className="mx-auto max-w-2xl rounded-[32px] border border-white/60 bg-white/70 p-8 text-center shadow-[var(--shadow-soft)] backdrop-blur-xl md:p-10">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#6B8F71]/12 text-2xl text-[var(--color-primary-dark)]">
