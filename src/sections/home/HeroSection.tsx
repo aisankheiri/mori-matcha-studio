@@ -43,8 +43,8 @@ export default function HeroSection() {
     return () => window.removeEventListener("resize", updateScreen);
   }, []);
 
-  const heroMatchaPrice = heroMatchaSize === "50g" ? 399 : 599;
-  const heroMatchaPriceLabel = heroMatchaSize === "50g" ? "₺399" : "₺599";
+  const heroMatchaPrice = heroMatchaSize === "50g" ? 349 : 649;
+  const heroMatchaPriceLabel = heroMatchaSize === "50g" ? "₺349" : "₺649";
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -440,7 +440,7 @@ export default function HeroSection() {
 
               <div className="mt-3 flex flex-1 flex-col">
                 <div className="text-3xl font-semibold text-[var(--color-text)]">
-                  ₺349
+                  ₺749
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
@@ -454,7 +454,7 @@ export default function HeroSection() {
                       handleAddToCart(
                         "bamboo-whisk",
                         t.products.bambooWhisk,
-                        349,
+                        749,
                         "/images/hero/whisk.png"
                       )
                     }
@@ -482,7 +482,7 @@ export default function HeroSection() {
 
               <div className="mt-3 flex flex-1 flex-col">
                 <div className="text-3xl font-semibold text-[var(--color-text)]">
-                  ₺649
+                  ₺499
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
@@ -496,7 +496,7 @@ export default function HeroSection() {
                       handleAddToCart(
                         "matcha-bowl",
                         t.products.matchaBowl,
-                        649,
+                        499,
                         "/images/products/bowl-product.png"
                       )
                     }

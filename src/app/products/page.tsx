@@ -19,8 +19,8 @@ export default function ProductsPage() {
   const { lang } = useLang();
   const t = dict[lang];
 
-  const matchaPrice = matchaSize === "50g" ? 399 : 599;
-  const matchaPriceLabel = matchaSize === "50g" ? "₺399" : "₺599";
+  const matchaPrice = matchaSize === "50g" ? 349 : 649;
+  const matchaPriceLabel = matchaSize === "50g" ? "₺349" : "₺649";
   const matchaDescription =
     matchaSize === "50g"
       ? t.products.matchaDescription50
@@ -30,7 +30,7 @@ export default function ProductsPage() {
     {
       slug: "bamboo-whisk",
       title: t.products.bambooWhisk,
-      price: 349,
+      price: 749,
       description: t.products.bambooWhiskDescription,
       image: "/images/hero/whisk.png",
       tag: t.products.bambooWhiskTag,
@@ -38,7 +38,7 @@ export default function ProductsPage() {
     {
       slug: "matcha-bowl",
       title: t.products.matchaBowl,
-      price: 649,
+      price: 499,
       description: t.products.matchaBowlDescription,
       image: "/images/products/bowl-product.png",
       tag: t.products.matchaBowlTag,
