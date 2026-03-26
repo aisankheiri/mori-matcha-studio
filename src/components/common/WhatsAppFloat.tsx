@@ -8,7 +8,7 @@ export default function SocialFloat() {
 
       {/* Instagram */}
       <a
-        href="https://instagram.com/yourusername"
+        href="https://instagram.com/_Matchaora"
         target="_blank"
         rel="noreferrer"
         aria-label="Instagram"
