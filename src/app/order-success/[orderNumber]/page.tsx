@@ -27,6 +27,16 @@ export default function OrderSuccessPage() {
           ? "Sipariş özetiniz e-posta adresinize gönderilecektir."
           : "Your order summary will be sent to your email address.",
 
+      paymentTitle:
+        lang === "TR"
+          ? "Ödeme için lütfen e-postanızı kontrol edin"
+          : "Please check your email for payment instructions",
+
+      paymentNote:
+        lang === "TR"
+          ? "Ödeme onaylandıktan sonra siparişiniz hazırlanarak kargoya verilecek ve size tekrar e-posta ile bilgilendirme yapılacaktır."
+          : "Once your payment is confirmed, your order will be prepared, shipped, and you will be informed again by email.",
+
       orderNumberLabel:
         lang === "TR" ? "Sipariş Numarası" : "Order Number",
 
@@ -51,7 +61,7 @@ export default function OrderSuccessPage() {
       <main className="min-h-screen bg-[var(--color-bg)] pt-28 pb-20 md:pt-32">
         <Container>
           <div className="mx-auto max-w-2xl rounded-[32px] border border-white/60 bg-white/70 p-8 text-center shadow-[var(--shadow-soft)] backdrop-blur-xl md:p-10">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#6B8F71]/12 text-2xl text-[var(--color-primary-dark)]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#6B8F71]/12 text-2xl text-[var(--color-primary-dark)] shadow-[0_10px_30px_rgba(107,143,113,0.16)]">
               ✓
             </div>
 
@@ -70,6 +80,26 @@ export default function OrderSuccessPage() {
 
               <div className="mt-2 text-lg font-semibold text-[var(--color-primary-dark)]">
                 {orderNumber}
+              </div>
+            </div>
+
+            <div className="relative mt-7 overflow-hidden rounded-[24px] border border-[#6B8F71]/15 bg-[linear-gradient(180deg,rgba(107,143,113,0.10)_0%,rgba(255,255,255,0.72)_100%)] p-5 text-left shadow-[0_18px_40px_rgba(107,143,113,0.08)] backdrop-blur-xl md:p-6">
+              <div className="absolute right-[-20px] top-[-20px] h-[90px] w-[90px] rounded-full bg-[#6B8F71]/10 blur-2xl" />
+
+              <div className="relative">
+                <div className="inline-flex rounded-full border border-[#6B8F71]/15 bg-white/75 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+                  {lang === "TR" ? "Ödeme Bilgilendirmesi" : "Payment Notice"}
+                </div>
+
+                <h2 className="mt-4 text-lg font-semibold text-[var(--color-text)] md:text-xl">
+                  {pageText.paymentTitle}
+                </h2>
+
+      
+
+                <div className="mt-4 rounded-[18px] border border-[#6B8F71]/12 bg-white/70 px-4 py-3 text-sm leading-7 text-[var(--color-text)]">
+                  {pageText.paymentNote}
+                </div>
               </div>
             </div>
 
