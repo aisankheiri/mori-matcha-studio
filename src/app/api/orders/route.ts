@@ -4,6 +4,13 @@ import { prisma } from "@/lib/prisma";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+const PAYMENT_INFO = {
+  bankName: "Ziraat Bankası",
+  accountName: "AISAN KHEIRI",
+  iban: "TR46 0001 0006 0691 7065 5250 01",
+  whatsappNumber: "905528618606", // burayı kendi numaranla değiştir
+};
+
 type OrderItem = {
   id: string;
   title: string;
@@ -99,6 +106,11 @@ function customerEmailHtml({
 }) {
   const itemsRows = buildItemsRows(items);
 
+  const whatsappText = encodeURIComponent(
+    `Merhaba, ${orderNumber} numaralı siparişim için ödemeyi yaptım. Dekontu sizinle paylaşmak istiyorum.`
+  );
+  const whatsappUrl = `https://wa.me/${PAYMENT_INFO.whatsappNumber}?text=${whatsappText}`;
+
   return `
     <div style="margin:0;padding:0;background:#f6f4ef;font-family:Arial,sans-serif;">
       <div style="max-width:680px;margin:0 auto;padding:32px 20px;">
@@ -153,6 +165,55 @@ function customerEmailHtml({
               <span style="color:#426b4d;">₺${total}</span>
             </div>
           </div>
+
+          <div style="margin-top:28px;background:#f7f6f2;border-radius:18px;padding:20px;">
+            <div style="font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#8b988f;margin-bottom:10px;">
+              Ödeme Bilgileri
+            </div>
+
+            <div style="font-size:14px;line-height:1.8;color:#1f2f2a;">
+              <div><strong>Banka:</strong> ${PAYMENT_INFO.bankName}</div>
+              <div><strong>Alıcı:</strong> ${PAYMENT_INFO.accountName}</div>
+              <div><strong>IBAN:</strong> ${PAYMENT_INFO.iban}</div>
+            </div>
+
+            <p style="margin-top:16px;font-size:14px;line-height:1.7;color:#5f6f66;">
+              Lütfen ödemenizi <strong>24 saat içerisinde</strong> yukarıdaki IBAN'a yapınız.
+              Açıklama kısmına <strong>${orderNumber}</strong> sipariş numarasını yazınız.
+            </p>
+
+            <p style="margin-top:10px;font-size:14px;line-height:1.7;color:#5f6f66;">
+              Ödemeyi yaptıktan sonra tarafımıza WhatsApp üzerinden bilgi verebilir ve dekontunuzu paylaşabilirsiniz.
+              Ödemeniz onaylandıktan sonra siparişiniz en kısa sürede hazırlanarak kargoya verilecek, ardından teslimat süreci başladığında size tekrar e-posta ile bilgi verilecektir.
+            </p>
+
+            <div style="margin-top:14px;">
+              <a
+                href="${whatsappUrl}"
+                style="display:inline-block;padding:10px 18px;border-radius:10px;background:#25D366;color:white;font-size:13px;text-decoration:none;font-weight:600;"
+              >
+                WhatsApp ile Ödeme Bildir
+              </a>
+            </div>
+          </div>
+
+          <h2 style="margin:28px 0 12px;font-size:18px;color:#1f2f2a;">Teslimat Bilgileri</h2>
+
+          <div style="font-size:14px;line-height:1.8;color:#5f6f66;">
+            <div><strong>Ad Soyad:</strong> ${customer.firstName} ${customer.lastName}</div>
+            <div><strong>E-posta:</strong> ${customer.email}</div>
+            <div><strong>Telefon:</strong> ${customer.phone}</div>
+            <div><strong>Adres:</strong> ${customer.address}</div>
+            <div><strong>Bölge:</strong> ${customer.district} / ${customer.city}</div>
+            ${customer.note ? `<div><strong>Not:</strong> ${customer.note}</div>` : ""}
+          </div>
+          <div style="margin-top:30px;text-align:center;">
+  <img 
+    src="https://matchaora.com/logo.png" 
+    alt="Matchaora"
+    style="height:40px;opacity:0.9;"
+  />
+</div>
         </div>
       </div>
     </div>
@@ -185,6 +246,7 @@ function adminEmailHtml({
 
         <div style="margin-bottom:18px;font-size:14px;line-height:1.8;color:#425046;">
           <div><strong>Sipariş No:</strong> ${orderNumber}</div>
+          <div><strong>Ödeme Yöntemi:</strong> Havale / EFT</div>
           <div><strong>Müşteri:</strong> ${customer.firstName} ${customer.lastName}</div>
           <div><strong>E-posta:</strong> ${customer.email}</div>
           <div><strong>Telefon:</strong> ${customer.phone}</div>
