@@ -73,6 +73,12 @@ export const dict = {
                 "Doğru ölçü ve daha estetik hazırlık deneyimi için zarif matcha kaşığı.",
 
             toastAdded: "Sepete eklendi",
+            matchaSet: "Matcha Ritüel Seti",
+            matchaSetTag: "Özel Set",
+            matchaSetDescription:
+                "Matcha deneyimine eksiksiz başlamak isteyenler için hazırlanan özel set. Seremonik matcha, bowl, bambu whisk ve matcha kaşığını bir arada sunar.",
+            matchaSetMeta:
+                "İçerik: Matcha 100 gr + Bowl + Bambu Whisk + Matcha Kaşığı",
         },
         recipes: {
             badge: "Fit Matcha Tarifleri",
@@ -312,32 +318,33 @@ export const dict = {
             },
         },
         matchaJourney: {
-  badge: "Matcha Yolculuğu",
-  title: "Matcha nasıl üretilir?",
-  text: "Matcha, özel yetiştirme ve işleme adımları sayesinde klasik yeşil çaydan ayrılır. Her aşama, hem kaliteyi hem de yoğun aromayı belirler.",
-  stepLabel: "Aşama",
-  steps: {
-    oneTitle: "Çay Bitkisinin Yetişmesi",
-    oneText:
-      "Matcha, Camellia sinensis adlı çay bitkisinden elde edilir. Ancak burada kullanılan yapraklar özenle seçilen, daha kaliteli ve hassas üretim süreçlerinden geçen yapraklardır.",
-    oneAlt: "Çay yaprakları",
+            badge: "Matcha Yolculuğu",
+            title: "Matcha nasıl üretilir?",
+            text: "Matcha, özel yetiştirme ve işleme adımları sayesinde klasik yeşil çaydan ayrılır. Her aşama, hem kaliteyi hem de yoğun aromayı belirler.",
+            stepLabel: "Aşama",
+            steps: {
+                oneTitle: "Çay Bitkisinin Yetişmesi",
+                oneText:
+                    "Matcha, Camellia sinensis adlı çay bitkisinden elde edilir. Ancak burada kullanılan yapraklar özenle seçilen, daha kaliteli ve hassas üretim süreçlerinden geçen yapraklardır.",
+                oneAlt: "Çay yaprakları",
 
-    twoTitle: "Gölgeleme Süreci",
-    twoText:
-      "Hasattan yaklaşık 3-4 hafta önce çay bitkileri güneş ışığından korunur. Bu yöntem klorofil seviyesini artırır, yaprakların daha canlı yeşil olmasını ve tadın daha yumuşak hale gelmesini sağlar.",
-    twoAlt: "Gölgelenen çay tarlası",
+                twoTitle: "Gölgeleme Süreci",
+                twoText:
+                    "Hasattan yaklaşık 3-4 hafta önce çay bitkileri güneş ışığından korunur. Bu yöntem klorofil seviyesini artırır, yaprakların daha canlı yeşil olmasını ve tadın daha yumuşak hale gelmesini sağlar.",
+                twoAlt: "Gölgelenen çay tarlası",
 
-    threeTitle: "Tencha Hazırlığı",
-    threeText:
-      "Toplanan yapraklar buharlanır, kurutulur ve damarları ayrılır. Bu aşamadaki saf yaprak formuna tencha denir. Matcha üretiminin temel ham maddesi budur.",
-    threeAlt: "Tencha işleme süreci",
+                threeTitle: "Tencha Hazırlığı",
+                threeText:
+                    "Toplanan yapraklar buharlanır, kurutulur ve damarları ayrılır. Bu aşamadaki saf yaprak formuna tencha denir. Matcha üretiminin temel ham maddesi budur.",
+                threeAlt: "Tencha işleme süreci",
 
-    fourTitle: "Taş Değirmende Öğütme",
-    fourText:
-      "Tencha yaprakları yavaşça taş değirmenlerde öğütülerek ultra ince, canlı yeşil bir toza dönüştürülür. Ortaya çıkan bu pudra form, gerçek matcha deneyimini oluşturur.",
-    fourAlt: "Matcha tozu",
-  },
-},
+                fourTitle: "Taş Değirmende Öğütme",
+                fourText:
+                    "Tencha yaprakları yavaşça taş değirmenlerde öğütülerek ultra ince, canlı yeşil bir toza dönüştürülür. Ortaya çıkan bu pudra form, gerçek matcha deneyimini oluşturur.",
+                fourAlt: "Matcha tozu",
+            },
+        },
+
     },
 
     EN: {
@@ -414,6 +421,12 @@ export const dict = {
                 "An elegant matcha spoon for accurate measuring and a more aesthetic preparation experience.",
 
             toastAdded: "Added to cart",
+            matchaSet: "Matcha Ritual Set",
+            matchaSetTag: "Special Set",
+            matchaSetDescription:
+                "A curated set for those who want to begin the matcha experience in a complete way. Includes ceremonial matcha, bowl, bamboo whisk, and matcha spoon together.",
+            matchaSetMeta:
+                "Includes: 100 g Matcha + Bowl + Bamboo Whisk + Matcha Spoon",
         },
         recipes: {
             badge: "Fit Matcha Recipes",
@@ -652,33 +665,33 @@ export const dict = {
                 },
             },
         },
-matchaJourney: {
-  badge: "The Matcha Journey",
-  title: "How is matcha made?",
-  text: "Matcha differs from regular green tea thanks to its special growing and processing steps. Each stage defines its quality, color, and rich aroma.",
-  stepLabel: "Step",
-  steps: {
-    oneTitle: "Growing the Tea Plant",
-    oneText:
-      "Matcha comes from the Camellia sinensis tea plant. However, the leaves used for matcha are carefully selected and go through more refined cultivation processes.",
-    oneAlt: "Tea leaves",
+        matchaJourney: {
+            badge: "The Matcha Journey",
+            title: "How is matcha made?",
+            text: "Matcha differs from regular green tea thanks to its special growing and processing steps. Each stage defines its quality, color, and rich aroma.",
+            stepLabel: "Step",
+            steps: {
+                oneTitle: "Growing the Tea Plant",
+                oneText:
+                    "Matcha comes from the Camellia sinensis tea plant. However, the leaves used for matcha are carefully selected and go through more refined cultivation processes.",
+                oneAlt: "Tea leaves",
 
-    twoTitle: "Shading Process",
-    twoText:
-      "About 3–4 weeks before harvest, the tea plants are shaded from direct sunlight. This increases chlorophyll, enhances the vibrant green color, and creates a smoother flavor profile.",
-    twoAlt: "Shaded tea field",
+                twoTitle: "Shading Process",
+                twoText:
+                    "About 3–4 weeks before harvest, the tea plants are shaded from direct sunlight. This increases chlorophyll, enhances the vibrant green color, and creates a smoother flavor profile.",
+                twoAlt: "Shaded tea field",
 
-    threeTitle: "Preparing Tencha",
-    threeText:
-      "After harvesting, the leaves are steamed, dried, and stripped of stems and veins. In this purified form, the leaves are called tencha, which is the essential base of matcha.",
-    threeAlt: "Tencha processing",
+                threeTitle: "Preparing Tencha",
+                threeText:
+                    "After harvesting, the leaves are steamed, dried, and stripped of stems and veins. In this purified form, the leaves are called tencha, which is the essential base of matcha.",
+                threeAlt: "Tencha processing",
 
-    fourTitle: "Stone Grinding",
-    fourText:
-      "The tencha leaves are slowly ground in stone mills into an ultra-fine bright green powder. This final powdered form is what creates the authentic matcha experience.",
-    fourAlt: "Matcha powder",
-  },
-},
+                fourTitle: "Stone Grinding",
+                fourText:
+                    "The tencha leaves are slowly ground in stone mills into an ultra-fine bright green powder. This final powdered form is what creates the authentic matcha experience.",
+                fourAlt: "Matcha powder",
+            },
+        },
     },
 } as const;
 

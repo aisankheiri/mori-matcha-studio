@@ -51,16 +51,7 @@ export default function FooterDark() {
 
         <div className="flex flex-col items-center gap-3 border-t border-[#6B8F71]/20 py-4 text-[10px] text-[#7F938A]">
 
-          {/* LOGO BAND */}
-          <div className="rounded-full border border-[#6B8F71]/20 bg-white/5 px-6 py-3 backdrop-blur-md">
-            <Image
-              src="/images/payments/payment-logos.png"
-              alt="Secure payment methods"
-              width={220}
-              height={40}
-              className="opacity-90 transition duration-300 hover:opacity-100"
-            />
-          </div>
+
 
 
           {/* COPYRIGHT */}

@@ -26,6 +26,16 @@ export default function ProductsPage() {
       ? t.products.matchaDescription50
       : t.products.matchaDescription100;
 
+  const bundleProduct = {
+    slug: "matcha-ritual-set",
+    title: t.products.matchaSet,
+    price: 1799,
+    description: t.products.matchaSetDescription,
+    image: "/images/products/matcha-set.png",
+    tag: t.products.matchaSetTag,
+    meta: t.products.matchaSetMeta,
+  };
+
   const simpleProducts = [
     {
       slug: "bamboo-whisk",
@@ -71,6 +81,64 @@ export default function ProductsPage() {
 
           <Container>
             <div className="space-y-8 md:space-y-10">
+              {/* SET PRODUCT */}
+              <article className="rounded-[28px] border border-[#6B8F71]/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(255,255,255,0.68)_100%)] p-5 shadow-[0_10px_40px_rgba(0,0,0,0.05)] backdrop-blur-xl transition duration-300 hover:-translate-y-[2px] hover:shadow-[0_16px_46px_rgba(0,0,0,0.07)] md:p-6">
+                <div className="grid items-center gap-6 md:grid-cols-[360px_1px_1fr] md:gap-8">
+                  <div className={imageWrapClass}>
+                    <div className="absolute inset-x-1/2 top-1/2 -z-10 h-[160px] w-[240px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#dce8d8]/35 blur-3xl" />
+                    <Image
+                      src={bundleProduct.image}
+                      alt={bundleProduct.title}
+                      width={500}
+                      height={500}
+                      className="w-[190px] object-contain transition duration-300 hover:scale-105 md:w-[250px]"
+                    />
+                  </div>
+
+                  <div className="hidden h-full w-px bg-[#6B8F71]/22 md:block" />
+
+                  <div className="pt-1">
+                    <span className="inline-flex rounded-full border border-[#6B8F71]/15 bg-[#6B8F71]/6 px-3 py-1 text-[9px] font-medium uppercase tracking-[0.18em] text-[var(--color-primary-dark)]">
+                      {bundleProduct.tag}
+                    </span>
+
+                    <h2 className="mt-4 text-2xl font-semibold tracking-tight text-[var(--color-text)] md:text-3xl">
+                      {bundleProduct.title}
+                    </h2>
+
+                    <div className="mt-2 text-xl font-semibold text-[var(--color-primary-dark)] md:text-2xl">
+                      ₺{bundleProduct.price}
+                    </div>
+
+                    <p className="mt-4 max-w-2xl text-sm leading-7 text-[var(--color-text-soft)]">
+                      {bundleProduct.description}
+                    </p>
+
+                    <div className="mt-4 rounded-[18px] border border-[#6B8F71]/12 bg-white/70 px-4 py-3 text-sm leading-7 text-[var(--color-text)]">
+                      {bundleProduct.meta}
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                      <Button
+                        onClick={() => {
+                          addToCart({
+                            id: bundleProduct.slug,
+                            title: bundleProduct.title,
+                            price: bundleProduct.price,
+                            image: bundleProduct.image,
+                            meta: bundleProduct.meta,
+                          });
+                          showToast(t.products.toastAdded);
+                        }}
+                      >
+                        {t.products.addToCart}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* MATCHA */}
               <article className="rounded-[28px] border border-white/50 bg-white/60 p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-lg transition duration-300 hover:-translate-y-[2px] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] md:p-6">
                 <div className="grid items-center gap-6 md:grid-cols-[360px_1px_1fr] md:gap-8">
                   <div className={imageWrapClass}>
@@ -158,6 +226,7 @@ export default function ProductsPage() {
                 </div>
               </article>
 
+              {/* SIMPLE PRODUCTS */}
               {simpleProducts.map((product) => (
                 <article
                   key={product.slug}
