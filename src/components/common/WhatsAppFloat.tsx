@@ -24,13 +24,14 @@ export default function SocialFloat() {
             hover:scale-110 hover:bg-white
           "
         >
-          <Image
-            src="/images/Portfolio-logo.png" // 🔥 LOGONU BURAYA KOY
-            alt="Aisan Logo"
-            width={36}
-            height={36}
-            className="rounded-full object-cover"
-          />
+         <div className="relative h-full w-full overflow-hidden rounded-full">
+  <Image
+    src="/images/Portfolio-logo.png"
+    alt="Aisan Logo"
+    fill
+    className="object-cover"
+  />
+</div>
         </a>
       </div>
 
