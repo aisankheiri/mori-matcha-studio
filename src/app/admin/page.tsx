@@ -33,6 +33,7 @@ type AdminOrder = {
   totalItems: number;
   status: "pending" | "preparing" | "shipped" | "completed" | string;
   trackingNumber?: string | null;
+  cargoCompany?: string | null;
   createdAt: string;
   items: AdminOrderItem[];
 };
@@ -53,6 +54,9 @@ export default function AdminPage() {
   const [trackingInputs, setTrackingInputs] = useState<Record<string, string>>(
     {}
   );
+  const [cargoCompanyInputs, setCargoCompanyInputs] = useState<
+    Record<string, string>
+  >({});
   const [statusInputs, setStatusInputs] = useState<Record<string, string>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const router = useRouter();
@@ -88,6 +92,9 @@ export default function AdminPage() {
       trackingNumber: lang === "TR" ? "Kargo Takip No" : "Tracking Number",
       trackingPlaceholder:
         lang === "TR" ? "Takip numarası girin" : "Enter tracking number",
+      cargoCompany: lang === "TR" ? "Kargo Firması" : "Cargo Company",
+      cargoCompanyPlaceholder:
+        lang === "TR" ? "Kargo firması girin" : "Enter cargo company",
       all: lang === "TR" ? "Tümü" : "All",
       save: lang === "TR" ? "Kaydet" : "Save",
       saving: lang === "TR" ? "Kaydediliyor..." : "Saving...",
@@ -103,6 +110,10 @@ export default function AdminPage() {
         lang === "TR"
           ? "Kargoya verildi durumu için takip numarası girin."
           : "Enter a tracking number for shipped status.",
+      cargoCompanyRequired:
+        lang === "TR"
+          ? "Kargoya verildi durumu için kargo firması girin."
+          : "Enter a cargo company for shipped status.",
       saved:
         lang === "TR"
           ? "Sipariş durumu güncellendi."
@@ -131,14 +142,17 @@ export default function AdminPage() {
         setOrders(fetchedOrders);
 
         const initialTracking: Record<string, string> = {};
+        const initialCargoCompanies: Record<string, string> = {};
         const initialStatuses: Record<string, string> = {};
 
         fetchedOrders.forEach((order) => {
           initialTracking[order.id] = order.trackingNumber || "";
+          initialCargoCompanies[order.id] = order.cargoCompany || "";
           initialStatuses[order.id] = order.status;
         });
 
         setTrackingInputs(initialTracking);
+        setCargoCompanyInputs(initialCargoCompanies);
         setStatusInputs(initialStatuses);
       } catch (err) {
         console.error(err);
@@ -214,6 +228,13 @@ export default function AdminPage() {
 
       const selectedStatus = statusInputs[orderId];
       const trackingNumber = trackingInputs[orderId]?.trim() || "";
+      const cargoCompany = cargoCompanyInputs[orderId]?.trim() || "";
+
+      if (selectedStatus === "shipped" && !cargoCompany) {
+        alert(t.cargoCompanyRequired);
+        setSavingId(null);
+        return;
+      }
 
       if (selectedStatus === "shipped" && !trackingNumber) {
         alert(t.trackingRequired);
@@ -229,6 +250,7 @@ export default function AdminPage() {
         body: JSON.stringify({
           status: selectedStatus,
           trackingNumber,
+          cargoCompany,
         }),
       });
 
@@ -242,13 +264,17 @@ export default function AdminPage() {
         prev.map((order) =>
           order.id === orderId
             ? {
-              ...order,
-              status: selectedStatus,
-              trackingNumber:
-                selectedStatus === "shipped"
-                  ? trackingNumber
-                  : data.order?.trackingNumber ?? order.trackingNumber,
-            }
+                ...order,
+                status: selectedStatus,
+                trackingNumber:
+                  selectedStatus === "shipped"
+                    ? trackingNumber
+                    : data.order?.trackingNumber ?? order.trackingNumber,
+                cargoCompany:
+                  selectedStatus === "shipped"
+                    ? cargoCompany
+                    : data.order?.cargoCompany ?? order.cargoCompany,
+              }
             : order
         )
       );
@@ -264,6 +290,7 @@ export default function AdminPage() {
 
   const filteredOrders =
     filter === "all" ? orders : orders.filter((order) => order.status === filter);
+
   const handleLogout = async () => {
     try {
       await fetch("/api/admin/logout", {
@@ -286,24 +313,24 @@ export default function AdminPage() {
         <Container>
           <div className="mx-auto w-full max-w-[var(--container-width)]">
             <div className="rounded-[32px] border border-white/60 bg-white/70 p-6 shadow-[var(--shadow-soft)] backdrop-blur-xl md:p-8">
-         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-  <div>
-    <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text)]">
-      {t.title}
-    </h1>
+              <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text)]">
+                    {t.title}
+                  </h1>
 
-    <p className="mt-3 text-sm leading-7 text-[var(--color-text-soft)] md:text-base">
-      {t.subtitle}
-    </p>
-  </div>
+                  <p className="mt-3 text-sm leading-7 text-[var(--color-text-soft)] md:text-base">
+                    {t.subtitle}
+                  </p>
+                </div>
 
-  <button
-    onClick={handleLogout}
-    className="rounded-full border border-[#6B8F71]/20 bg-white/80 px-4 py-2 text-sm font-medium text-[var(--color-text)] transition hover:bg-white"
-  >
-    {lang === "TR" ? "Çıkış Yap" : "Logout"}
-  </button>
-</div>
+                <button
+                  onClick={handleLogout}
+                  className="rounded-full border border-[#6B8F71]/20 bg-white/80 px-4 py-2 text-sm font-medium text-[var(--color-text)] transition hover:bg-white"
+                >
+                  {lang === "TR" ? "Çıkış Yap" : "Logout"}
+                </button>
+              </div>
 
               <div className="mt-8 grid gap-4 md:grid-cols-3">
                 <div className="rounded-[24px] border border-white/60 bg-white/75 p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
@@ -347,10 +374,11 @@ export default function AdminPage() {
                       <button
                         key={value}
                         onClick={() => setFilter(value)}
-                        className={`rounded-full px-4 py-2 text-xs font-medium transition ${filter === value
+                        className={`rounded-full px-4 py-2 text-xs font-medium transition ${
+                          filter === value
                             ? "bg-[var(--color-primary)] text-white"
                             : "border border-white/60 bg-white/75 text-[var(--color-text-soft)]"
-                          }`}
+                        }`}
                       >
                         {value === "all" ? t.all : statusLabel(value)}
                       </button>
@@ -419,18 +447,33 @@ export default function AdminPage() {
                             </div>
 
                             {selectedStatus === "shipped" && (
-                              <input
-                                type="text"
-                                value={trackingInputs[order.id] || ""}
-                                onChange={(e) =>
-                                  setTrackingInputs((prev) => ({
-                                    ...prev,
-                                    [order.id]: e.target.value,
-                                  }))
-                                }
-                                placeholder={t.trackingPlaceholder}
-                                className="w-[220px] rounded-[14px] border border-[#6B8F71]/20 bg-white/90 px-4 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[#6B8F71]/50"
-                              />
+                              <div className="flex flex-col gap-2">
+                                <input
+                                  type="text"
+                                  value={cargoCompanyInputs[order.id] || ""}
+                                  onChange={(e) =>
+                                    setCargoCompanyInputs((prev) => ({
+                                      ...prev,
+                                      [order.id]: e.target.value,
+                                    }))
+                                  }
+                                  placeholder={t.cargoCompanyPlaceholder}
+                                  className="w-[220px] rounded-[14px] border border-[#6B8F71]/20 bg-white/90 px-4 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[#6B8F71]/50"
+                                />
+
+                                <input
+                                  type="text"
+                                  value={trackingInputs[order.id] || ""}
+                                  onChange={(e) =>
+                                    setTrackingInputs((prev) => ({
+                                      ...prev,
+                                      [order.id]: e.target.value,
+                                    }))
+                                  }
+                                  placeholder={t.trackingPlaceholder}
+                                  className="w-[220px] rounded-[14px] border border-[#6B8F71]/20 bg-white/90 px-4 py-2 text-sm text-[var(--color-text)] outline-none focus:border-[#6B8F71]/50"
+                                />
+                              </div>
                             )}
 
                             <button
@@ -491,6 +534,11 @@ export default function AdminPage() {
                           {order.note ? (
                             <div className="mt-2 text-sm text-[var(--color-text-soft)]">
                               {t.note}: {order.note}
+                            </div>
+                          ) : null}
+                          {order.cargoCompany ? (
+                            <div className="mt-2 text-sm text-[var(--color-primary-dark)]">
+                              {t.cargoCompany}: {order.cargoCompany}
                             </div>
                           ) : null}
                           {order.trackingNumber ? (

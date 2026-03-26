@@ -28,6 +28,7 @@ model Order {
 
   status      String      @default("pending")
   trackingNumber String?
+  cargoCompany String?
   createdAt   DateTime    @default(now())
 
   items       OrderItem[]

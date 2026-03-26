@@ -47,13 +47,14 @@ function preparingEmailHtml({
           <p style="margin:0;font-size:15px;line-height:1.8;color:#5f6f66;">
             Bizi tercih ettiğiniz için teşekkür eder, Matchaora ile keyifli bir matcha deneyimi yaşamanızı dileriz.
           </p>
+
           <div style="margin-top:30px;text-align:center;">
-  <img 
-    src="https://matchaora.com/logo.png" 
-    alt="Matchaora"
-    style="height:40px;opacity:0.9;"
-  />
-</div>
+            <img 
+              src="https://matchaora.com/logo.png" 
+              alt="Matchaora"
+              style="height:40px;opacity:0.9;"
+            />
+          </div>
 
           <div style="margin-top:30px;border-top:1px solid #e9ece7;padding-top:18px;text-align:center;">
             <div style="font-size:11px;color:#8b988f;letter-spacing:0.12em;">
@@ -70,10 +71,12 @@ function shippedEmailHtml({
   firstName,
   orderNumber,
   trackingNumber,
+  cargoCompany,
 }: {
   firstName: string;
   orderNumber: string;
   trackingNumber?: string | null;
+  cargoCompany?: string | null;
 }) {
   return `
     <div style="margin:0;padding:0;background:#f6f4ef;font-family:Arial,sans-serif;">
@@ -95,30 +98,49 @@ function shippedEmailHtml({
             <strong>${orderNumber}</strong> numaralı siparişiniz kargoya verilmiştir.
           </p>
 
-          ${trackingNumber
-      ? `
-            <div style="background:#f7f6f2;border-radius:18px;padding:16px 18px;margin:22px 0;">
-              <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8b988f;margin-bottom:6px;">
-                Kargo Takip Numarası
+          <div style="background:#f7f6f2;border-radius:18px;padding:16px 18px;margin:22px 0;">
+            ${
+              cargoCompany
+                ? `
+              <div style="margin-bottom:12px;">
+                <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8b988f;margin-bottom:6px;">
+                  Kargo Firması
+                </div>
+                <div style="font-size:18px;font-weight:700;color:#426b4d;">
+                  ${cargoCompany}
+                </div>
               </div>
-              <div style="font-size:20px;font-weight:700;color:#426b4d;">
-                ${trackingNumber}
+            `
+                : ""
+            }
+
+            ${
+              trackingNumber
+                ? `
+              <div>
+                <div style="font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8b988f;margin-bottom:6px;">
+                  Kargo Takip Numarası
+                </div>
+                <div style="font-size:20px;font-weight:700;color:#426b4d;">
+                  ${trackingNumber}
+                </div>
               </div>
-            </div>
-          `
-      : ""
-    }
+            `
+                : ""
+            }
+          </div>
 
           <p style="margin:0;font-size:15px;line-height:1.8;color:#5f6f66;">
             Teslimat süreci başlamıştır. Siparişiniz en kısa sürede tarafınıza ulaştırılacaktır.
           </p>
-                    <div style="margin-top:30px;text-align:center;">
-  <img 
-    src="https://matchaora.com/logo.png" 
-    alt="Matchaora"
-    style="height:40px;opacity:0.9;"
-  />
-</div>
+
+          <div style="margin-top:30px;text-align:center;">
+            <img 
+              src="https://matchaora.com/logo.png" 
+              alt="Matchaora"
+              style="height:40px;opacity:0.9;"
+            />
+          </div>
 
           <div style="margin-top:30px;border-top:1px solid #e9ece7;padding-top:18px;text-align:center;">
             <div style="font-size:11px;color:#8b988f;letter-spacing:0.12em;">
@@ -141,6 +163,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     const body = (await request.json()) as {
       status?: string;
       trackingNumber?: string;
+      cargoCompany?: string;
     };
 
     const allowedStatuses = ["pending", "preparing", "shipped", "completed"];
@@ -155,6 +178,13 @@ export async function PATCH(request: Request, context: RouteContext) {
     if (body.status === "shipped" && !body.trackingNumber?.trim()) {
       return NextResponse.json(
         { success: false, message: "Tracking number required" },
+        { status: 400 }
+      );
+    }
+
+    if (body.status === "shipped" && !body.cargoCompany?.trim()) {
+      return NextResponse.json(
+        { success: false, message: "Cargo company required" },
         { status: 400 }
       );
     }
@@ -178,14 +208,15 @@ export async function PATCH(request: Request, context: RouteContext) {
           body.status === "shipped"
             ? body.trackingNumber?.trim() || null
             : existingOrder.trackingNumber ?? null,
+        cargoCompany:
+          body.status === "shipped"
+            ? body.cargoCompany?.trim() || null
+            : existingOrder.cargoCompany ?? null,
       },
     });
 
     if (process.env.RESEND_API_KEY) {
-      if (
-        body.status === "preparing" &&
-        existingOrder.status !== "preparing"
-      ) {
+      if (body.status === "preparing" && existingOrder.status !== "preparing") {
         const result = await resend.emails.send({
           from: "Matchaora <orders@matchaora.com>",
           to: updatedOrder.email,
@@ -199,10 +230,7 @@ export async function PATCH(request: Request, context: RouteContext) {
         console.log("PREPARING_EMAIL_RESULT", result);
       }
 
-      if (
-        body.status === "shipped" &&
-        existingOrder.status !== "shipped"
-      ) {
+      if (body.status === "shipped" && existingOrder.status !== "shipped") {
         const result = await resend.emails.send({
           from: "Matchaora <orders@matchaora.com>",
           to: updatedOrder.email,
@@ -211,6 +239,7 @@ export async function PATCH(request: Request, context: RouteContext) {
             firstName: updatedOrder.firstName,
             orderNumber: updatedOrder.orderNumber,
             trackingNumber: updatedOrder.trackingNumber,
+            cargoCompany: updatedOrder.cargoCompany,
           }),
         });
 
