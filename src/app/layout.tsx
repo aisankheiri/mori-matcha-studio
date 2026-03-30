@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { ToastProvider } from "@/context/ToastContext";
 import { LangProvider } from "@/context/LangContext";
+import { Analytics } from "@vercel/analytics/react"; // 👈 EKLEDİK
 
 export const metadata: Metadata = {
   title: "Matchaora",
@@ -18,7 +19,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: {
@@ -29,7 +29,10 @@ export default function RootLayout({
       <body>
         <LangProvider>
           <CartProvider>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              {children}
+              <Analytics /> {/* 👈 BURAYA EKLE */}
+            </ToastProvider>
           </CartProvider>
         </LangProvider>
       </body>
