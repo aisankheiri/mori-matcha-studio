@@ -8,7 +8,7 @@ const PAYMENT_INFO = {
   bankName: "Ziraat Bankası",
   accountName: "AISAN KHEIRI",
   iban: "TR46 0001 0006 0691 7065 5250 01",
-  whatsappNumber: "905528618606", // burayı kendi numaranla değiştir
+  whatsappNumber: "905528618606",
 };
 
 type OrderItem = {
@@ -75,7 +75,11 @@ function buildItemsRows(items: OrderItem[]) {
       (item) => `
         <tr>
           <td style="padding:10px 12px;border-bottom:1px solid #e9ece7;font-size:14px;color:#243127;">
-            ${item.title}${item.meta ? ` <span style="color:#6b7a70;">(${item.meta})</span>` : ""}
+            ${item.title}${
+              item.meta
+                ? ` <span style="color:#6b7a70;">(${item.meta})</span>`
+                : ""
+            }
           </td>
           <td style="padding:10px 12px;border-bottom:1px solid #e9ece7;font-size:14px;color:#243127;text-align:center;">
             ${item.quantity}
@@ -207,13 +211,14 @@ function customerEmailHtml({
             <div><strong>Bölge:</strong> ${customer.district} / ${customer.city}</div>
             ${customer.note ? `<div><strong>Not:</strong> ${customer.note}</div>` : ""}
           </div>
+
           <div style="margin-top:30px;text-align:center;">
-  <img 
-    src="https://matchaora.com/logo.png" 
-    alt="Matchaora"
-    style="height:40px;opacity:0.9;"
-  />
-</div>
+            <img 
+              src="https://matchaora.com/logo.png" 
+              alt="Matchaora"
+              style="height:40px;opacity:0.9;"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -291,6 +296,31 @@ export async function POST(request: Request) {
       );
     }
 
+    const verifiedEmail = body.customer?.email?.trim().toLowerCase();
+
+    const verificationRecord = await prisma.emailVerificationCode.findFirst({
+      where: {
+        email: verifiedEmail,
+        verified: true,
+        expiresAt: {
+          gt: new Date(),
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    if (!verificationRecord) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Email verification is required before creating the order.",
+        },
+        { status: 400 }
+      );
+    }
+
     const orderNumber = generateOrderNumber();
 
     const customer = body.customer!;
@@ -329,6 +359,12 @@ export async function POST(request: Request) {
       },
       include: {
         items: true,
+      },
+    });
+
+    await prisma.emailVerificationCode.deleteMany({
+      where: {
+        email: verifiedEmail,
       },
     });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/layout/Navbar";
 import Container from "@/components/ui/Container";
@@ -38,13 +38,27 @@ export default function CheckoutPage() {
         note: "",
     });
 
-    const [errors, setErrors] = useState<Partial<Record<keyof CheckoutForm, string>>>({});
+    const [errors, setErrors] = useState<
+        Partial<Record<keyof CheckoutForm, string>>
+    >({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [verificationCode, setVerificationCode] = useState("");
+    const [isCodeSending, setIsCodeSending] = useState(false);
+    const [isVerifyingCode, setIsVerifyingCode] = useState(false);
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [verificationMessage, setVerificationMessage] = useState("");
+    const [verificationExpiresAt, setVerificationExpiresAt] = useState<
+        number | null
+    >(null);
+    const [timeLeft, setTimeLeft] = useState(0);
 
     const shipping = totalPrice >= 500 ? 0 : 80;
     const finalTotal = totalPrice + shipping;
 
     const isCartEmpty = items.length === 0;
+
+    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
 
     const pageText = useMemo(
         () => ({
@@ -52,7 +66,10 @@ export default function CheckoutPage() {
             stepInfo: lang === "TR" ? "Bilgiler" : "Details",
             stepConfirm: lang === "TR" ? "Onay" : "Confirmation",
 
-            title: lang === "TR" ? "Teslimat ve Sipariş Bilgileri" : "Delivery and Order Details",
+            title:
+                lang === "TR"
+                    ? "Teslimat ve Sipariş Bilgileri"
+                    : "Delivery and Order Details",
             subtitle:
                 lang === "TR"
                     ? "Siparişinizi tamamlamak için bilgilerinizi girin."
@@ -81,34 +98,97 @@ export default function CheckoutPage() {
             backToProducts: lang === "TR" ? "Ürünlere Dön" : "Back to Products",
 
             required: lang === "TR" ? "Bu alan zorunludur." : "This field is required.",
-            invalidEmail: lang === "TR" ? "Geçerli bir e-posta girin." : "Enter a valid email.",
+            invalidEmail:
+                lang === "TR" ? "Geçerli bir e-posta girin." : "Enter a valid email.",
             invalidPhone:
-                lang === "TR" ? "Geçerli bir telefon numarası girin." : "Enter a valid phone number.",
+                lang === "TR"
+                    ? "Geçerli bir telefon numarası girin."
+                    : "Enter a valid phone number.",
 
             subtotal: lang === "TR" ? "Ara Toplam" : "Subtotal",
             shipping: lang === "TR" ? "Kargo" : "Shipping",
             freeShipping: lang === "TR" ? "Ücretsiz" : "Free",
             total: lang === "TR" ? "Toplam" : "Total",
             totalItems: lang === "TR" ? "Toplam Ürün" : "Total Items",
+
+            verificationTitle:
+                lang === "TR" ? "E-posta Doğrulama" : "Email Verification",
+            verificationSubtitle:
+                lang === "TR"
+                    ? "Siparişten önce e-posta adresinizi doğrulamanız gerekiyor."
+                    : "You need to verify your email address before completing the order.",
+            sendCode: lang === "TR" ? "Kod Gönder" : "Send Code",
+            resendCode: lang === "TR" ? "Kodu Tekrar Gönder" : "Resend Code",
+            sendingCode: lang === "TR" ? "Gönderiliyor..." : "Sending...",
+            verifyCode: lang === "TR" ? "Kodu Doğrula" : "Verify Code",
+            verifyingCode: lang === "TR" ? "Doğrulanıyor..." : "Verifying...",
+            verificationCodeLabel:
+                lang === "TR" ? "Doğrulama Kodu" : "Verification Code",
+            verificationCodePlaceholder:
+                lang === "TR" ? "6 haneli kodu girin" : "Enter 6-digit code",
+            emailVerified:
+                lang === "TR" ? "E-posta doğrulandı." : "Email verified.",
+            emailNotVerified:
+                lang === "TR"
+                    ? "Siparişten önce e-posta doğrulaması gereklidir."
+                    : "Email verification is required before placing the order.",
+            verificationCodeSent:
+                lang === "TR"
+                    ? "Doğrulama kodu e-posta adresinize gönderildi."
+                    : "Verification code was sent to your email.",
+            verificationCodeSendError:
+                lang === "TR"
+                    ? "Kod gönderilirken hata oluştu."
+                    : "An error occurred while sending the code.",
+            verificationCodeInvalid:
+                lang === "TR"
+                    ? "Doğrulama kodu hatalı veya süresi dolmuş."
+                    : "Verification code is invalid or expired.",
+            countdownLabel:
+                lang === "TR" ? "Kodun geçerlilik süresi:" : "Code expires in:",
         }),
         [lang]
     );
 
+    useEffect(() => {
+        if (!verificationExpiresAt) {
+            setTimeLeft(0);
+            return;
+        }
+
+        const updateTimer = () => {
+            const diff = Math.max(
+                0,
+                Math.floor((verificationExpiresAt - Date.now()) / 1000)
+            );
+            setTimeLeft(diff);
+        };
+
+        updateTimer();
+        const interval = setInterval(updateTimer, 1000);
+
+        return () => clearInterval(interval);
+    }, [verificationExpiresAt]);
     const validate = () => {
         const nextErrors: Partial<Record<keyof CheckoutForm, string>> = {};
 
         if (!form.firstName.trim()) nextErrors.firstName = pageText.required;
         if (!form.lastName.trim()) nextErrors.lastName = pageText.required;
+
         if (!form.email.trim()) {
             nextErrors.email = pageText.required;
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
             nextErrors.email = pageText.invalidEmail;
         }
 
+        // 🔥 BURAYI DEĞİŞTİRİYORSUN
         if (!form.phone.trim()) {
             nextErrors.phone = pageText.required;
-        } else if (form.phone.replace(/\D/g, "").length < 10) {
-            nextErrors.phone = pageText.invalidPhone;
+        } else if (!/^05\d{9}$/.test(form.phone)) {
+            nextErrors.phone =
+                lang === "TR"
+                    ? "Telefon numarası 05XXXXXXXXX formatında olmalıdır."
+                    : "Phone must be in 05XXXXXXXXX format.";
         }
 
         if (!form.city.trim()) nextErrors.city = pageText.required;
@@ -119,16 +199,127 @@ export default function CheckoutPage() {
         return Object.keys(nextErrors).length === 0;
     };
 
+    const allRequiredFilled =
+        form.firstName.trim() &&
+        form.lastName.trim() &&
+        form.email.trim() &&
+        emailIsValid &&
+        form.phone.trim() &&
+        form.phone.replace(/\D/g, "").length >= 10 &&
+        form.city.trim() &&
+        form.district.trim() &&
+        form.address.trim();
+
+    const canSubmit = Boolean(allRequiredFilled && isEmailVerified && !isSubmitting);
+
+    const formatCountdown = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
+            2,
+            "0"
+        )}`;
+    };
+
     const updateField = (key: keyof CheckoutForm, value: string) => {
         setForm((prev) => ({ ...prev, [key]: value }));
+
+        if (key === "email") {
+            setIsEmailVerified(false);
+            setVerificationCode("");
+            setVerificationMessage("");
+            setVerificationExpiresAt(null);
+            setTimeLeft(0);
+        }
+
         if (errors[key]) {
             setErrors((prev) => ({ ...prev, [key]: "" }));
+        }
+    };
+
+    const handleSendCode = async () => {
+        if (!form.email.trim()) {
+            setErrors((prev) => ({ ...prev, email: pageText.required }));
+            return;
+        }
+
+        if (!emailIsValid) {
+            setErrors((prev) => ({ ...prev, email: pageText.invalidEmail }));
+            return;
+        }
+
+        try {
+            setIsCodeSending(true);
+            setVerificationMessage("");
+            setIsEmailVerified(false);
+
+            const response = await fetch("/api/verification/send", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: form.email }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Verification code could not be sent.");
+            }
+
+            setVerificationMessage(pageText.verificationCodeSent);
+            setVerificationExpiresAt(Date.now() + 10 * 60 * 1000);
+        } catch (error) {
+            console.error(error);
+            setVerificationMessage(pageText.verificationCodeSendError);
+        } finally {
+            setIsCodeSending(false);
+        }
+    };
+
+    const handleVerifyCode = async () => {
+        if (!verificationCode.trim()) return;
+
+        try {
+            setIsVerifyingCode(true);
+            setVerificationMessage("");
+
+            const response = await fetch("/api/verification/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: form.email,
+                    code: verificationCode,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || "Verification failed.");
+            }
+
+            setIsEmailVerified(true);
+            setVerificationMessage(pageText.emailVerified);
+        } catch (error) {
+            console.error(error);
+            setIsEmailVerified(false);
+            setVerificationMessage(pageText.verificationCodeInvalid);
+        } finally {
+            setIsVerifyingCode(false);
         }
     };
 
     const handleSubmit = async () => {
         if (isCartEmpty) return;
         if (!validate()) return;
+
+        if (!isEmailVerified) {
+            alert(pageText.emailNotVerified);
+            return;
+        }
 
         setIsSubmitting(true);
 
@@ -157,13 +348,27 @@ export default function CheckoutPage() {
             router.push(`/order-success/${data.orderNumber}`);
         } catch (error) {
             console.error(error);
-            alert(lang === "TR"
-                ? "Sipariş oluşturulurken bir hata oluştu."
-                : "An error occurred while creating the order.");
+            alert(
+                lang === "TR"
+                    ? "Sipariş oluşturulurken bir hata oluştu."
+                    : "An error occurred while creating the order."
+            );
         } finally {
             setIsSubmitting(false);
         }
     };
+    function formatPhone(value: string) {
+        // sadece rakamları al
+        let digits = value.replace(/\D/g, "");
+
+        // başına 0 koy (eğer yoksa)
+        if (digits && !digits.startsWith("0")) {
+            digits = "0" + digits;
+        }
+
+        // max 11 karakter
+        return digits.slice(0, 11);
+    }
 
     return (
         <>
@@ -234,8 +439,9 @@ export default function CheckoutPage() {
                                             label={pageText.phone}
                                             type="tel"
                                             value={form.phone}
-                                            onChange={(v) => updateField("phone", v)}
+                                            onChange={(v) => updateField("phone", formatPhone(v))}
                                             error={errors.phone}
+                                            placeholder="05XXXXXXXXX"
                                         />
 
                                         <Field
@@ -252,6 +458,71 @@ export default function CheckoutPage() {
                                             error={errors.district}
                                         />
                                     </div>
+
+                                    {emailIsValid && (
+                                        <div className="mt-4 rounded-[22px] border border-[#6B8F71]/15 bg-[var(--color-bg)] p-4">
+                                            <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--color-primary-dark)]">
+                                                {pageText.verificationTitle}
+                                            </div>
+
+                                            <p className="mt-2 text-sm leading-6 text-[var(--color-text-soft)]">
+                                                {pageText.verificationSubtitle}
+                                            </p>
+
+                                            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                                                <Button
+                                                    type="button"
+                                                    className="sm:w-auto !bg-[var(--color-primary)] !text-white hover:opacity-90"
+                                                    onClick={handleSendCode}
+                                                    disabled={isCodeSending}
+                                                >
+                                                    {isCodeSending
+                                                        ? pageText.sendingCode
+                                                        : timeLeft > 0
+                                                            ? pageText.resendCode
+                                                            : pageText.sendCode}
+                                                </Button>
+                                            </div>
+
+                                            {timeLeft > 0 && (
+                                                <div className="mt-3 text-sm font-semibold text-red-500">
+                                                    {pageText.countdownLabel} {formatCountdown(timeLeft)}
+                                                </div>
+                                            )}
+
+                                            <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                                                <input
+                                                    type="text"
+                                                    value={verificationCode}
+                                                    onChange={(e) => setVerificationCode(e.target.value)}
+                                                    placeholder={pageText.verificationCodePlaceholder}
+                                                    className="w-full rounded-[18px] border border-[#6B8F71]/22 bg-white/90 px-4 py-3 text-sm text-[var(--color-text)] outline-none transition duration-300 placeholder:text-[var(--color-text-muted)]/70 focus:border-[#6B8F71]/55 focus:ring-4 focus:ring-[#6B8F71]/10"
+                                                />
+
+                                                <Button
+                                                    type="button"
+                                                    className="sm:w-auto"
+                                                    onClick={handleVerifyCode}
+                                                    disabled={isVerifyingCode}
+                                                >
+                                                    {isVerifyingCode
+                                                        ? pageText.verifyingCode
+                                                        : pageText.verifyCode}
+                                                </Button>
+                                            </div>
+
+                                            {verificationMessage ? (
+                                                <div
+                                                    className={`mt-3 text-sm font-medium ${isEmailVerified
+                                                        ? "text-green-600"
+                                                        : "text-[var(--color-text-soft)]"
+                                                        }`}
+                                                >
+                                                    {verificationMessage}
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    )}
 
                                     <div className="mt-4">
                                         <Field
@@ -327,7 +598,11 @@ export default function CheckoutPage() {
 
                                         <div className="flex items-center justify-between">
                                             <span>{pageText.shipping}</span>
-                                            <span className={shipping === 0 ? "font-medium text-green-600" : ""}>
+                                            <span
+                                                className={
+                                                    shipping === 0 ? "font-medium text-green-600" : ""
+                                                }
+                                            >
                                                 {shipping === 0 ? pageText.freeShipping : "₺80"}
                                             </span>
                                         </div>
@@ -344,9 +619,12 @@ export default function CheckoutPage() {
 
                                     <div className="mt-6">
                                         <Button
-                                            className="w-full"
+                                            className={`w-full ${canSubmit
+                                                ? "!bg-[var(--color-primary)] !text-white hover:opacity-90"
+                                                : "!bg-[#d8ddd6] !text-[#7d857c] cursor-not-allowed"
+                                                }`}
                                             onClick={handleSubmit}
-                                            disabled={isSubmitting}
+                                            disabled={!canSubmit}
                                         >
                                             {isSubmitting ? "..." : pageText.completeOrder}
                                         </Button>
@@ -399,7 +677,8 @@ function Field({
                     onChange={(e) => onChange(e.target.value)}
                     placeholder={placeholder}
                     rows={4}
-                    className={`${baseClass} ${error ? errorClass : normalClass} resize-none`}
+                    className={`${baseClass} ${error ? errorClass : normalClass
+                        } resize-none`}
                 />
             ) : (
                 <input

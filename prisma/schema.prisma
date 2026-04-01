@@ -47,3 +47,11 @@ model OrderItem {
   meta      String?
   image     String
 }
+model EmailVerificationCode {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
