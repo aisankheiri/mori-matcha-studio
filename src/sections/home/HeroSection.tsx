@@ -482,7 +482,7 @@ export default function HeroSection() {
 
               <div className="mt-3 flex flex-1 flex-col">
                 <div className="text-3xl font-semibold text-[var(--color-text)]">
-                  ₺499
+                  ₺399
                 </div>
 
                 <p className="mt-3 text-sm leading-6 text-[var(--color-text-soft)]">
@@ -496,7 +496,7 @@ export default function HeroSection() {
                       handleAddToCart(
                         "matcha-bowl",
                         t.products.matchaBowl,
-                        499,
+                        399,
                         "/images/products/bowl-product.png"
                       )
                     }

@@ -29,7 +29,7 @@ export default function ProductsPage() {
   const bundleProduct = {
     slug: "matcha-ritual-set",
     title: t.products.matchaSet,
-    price: 1799,
+    price: 1499,
     description: t.products.matchaSetDescription,
     image: "/images/products/matcha-set.png",
     tag: t.products.matchaSetTag,
@@ -48,7 +48,7 @@ export default function ProductsPage() {
     {
       slug: "matcha-bowl",
       title: t.products.matchaBowl,
-      price: 499,
+      price: 399,
       description: t.products.matchaBowlDescription,
       image: "/images/products/bowl-product.png",
       tag: t.products.matchaBowlTag,
